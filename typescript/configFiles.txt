@@ -1,0 +1,14 @@
+Overview:
+build the "tsconfig.json" file.
+run main.js
+
+1/ cd to the config directory and build it
+>cd typescript/config
+>tsc --build tsconfig.json
+
+2/ cd to the main.js file directory and run it
+>cd typescript
+>node main.js
+
+
+in the tsconfig file you define what the files are to include

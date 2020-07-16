@@ -1,0 +1,10 @@
+tsc <name of file>
+
+to install:
+npm install -g typescript
+
+version:
+tsc --version
+
+help:
+tsc --help 
