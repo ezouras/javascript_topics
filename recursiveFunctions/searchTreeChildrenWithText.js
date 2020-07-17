@@ -288,7 +288,7 @@ let rootNode = cData[0].children.filter(function cb(node) {
 })
 
 /********** this works **********/
-function filter(array, isMatch) { //fn returns either tru or false
+function filter(array, isMatch) { //is match returns either tru or false
   return array.reduce((acc, nV) => { //r is the acc, o is the next value
     //first call the filter function again on the children
     var children = filter(nV.children || [], isMatch);
@@ -297,7 +297,7 @@ function filter(array, isMatch) { //fn returns either tru or false
     if (isMatch(nV) || children.length) {
       //object.assign can have multiple sources. the rightmost has the most precendence
       //first two arguments make a copy of nV (the node )
-      //last argument replaces the children with the filtered children in this functino 
+      //last argument replaces the children with the filtered children in this functino
       acc.push(Object.assign({}, nV, children.length && {
         children
       }))
@@ -305,12 +305,10 @@ function filter(array, isMatch) { //fn returns either tru or false
     return acc;
   }, []);
 }
-
-/
 result = filter(cData, ({
   label
 }) => label.toLowerCase().indexOf(filteredText.toLowerCase()) > -1);
 
 console.log("result is ", result);
 console.log("orig data", cData);
-console.log("rootNode ", rootNode)
+//console.log("rootNode ", rootNode)
