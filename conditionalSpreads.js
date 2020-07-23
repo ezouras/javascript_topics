@@ -30,6 +30,12 @@ let sourceF = {
 console.log("source F is ", sourceF)
 let arr3 = [];
 let children = ["five", "two"];
+//turn children into an object with property name children
+//whos value is ["five", 'two']
+let childrenObj = {
+  children
+}
+console.log(childrenObj)
 arr3.push(Object.assign({}, sourceD, children.length && {
   children
 }));
