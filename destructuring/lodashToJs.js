@@ -8,11 +8,17 @@ let object = {
 let {
   car,
   colour
-} = object;
+} = object; //create variable 'car' equal to "Honda" and variable "colour" equal to "red"
+console.log("car is ", car);
+console.log("colour is ", colour)
 let result = {
   car,
   colour
 };
+//create an object with car and colour propoperties that are equal to those variables
+
+console.log(result);
+// Output: { car: 'Honda', colour: 'Red' };
 
 let obj3 = {
   name: "0",
@@ -34,8 +40,6 @@ let obj3 = {
 }
 
 
-console.log(result);
-// Output: { car: 'Honda', colour: 'Red' };
 
 let objectTwo = {
   a: [{
@@ -52,6 +56,8 @@ let {
     }
   }]
 } = objectTwo;
+
+//sets resultTwo equal to what "c" property is equal to; which is 3
 
 let {
   a: [{
