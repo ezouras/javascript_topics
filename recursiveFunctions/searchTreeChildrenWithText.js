@@ -1,273 +1,273 @@
 let cData = [{
-  label: 'AbbVie Drugs Regulatory',
+  label: 'ontology_one',
   children: [{
-      label: 'AbbVie Drugs',
+      label: 'schema_one',
       children: [{
-          label: '5-Desosaminyl-6-0-Methyl Erythronolide'
+          label: 'item-1'
         },
         {
-          label: 'A-1007742'
+          label: 'item-2'
         },
         {
-          label: "ABBV-011"
+          label: "item-3"
         },
         {
-          label: "bifeprunox"
+          label: "item-4"
         },
         {
-          label: "calcitriol"
+          label: "item-5"
         },
         {
-          label: "carbidopa"
+          label: "item-6"
         },
         {
-          label: "cethromycin"
+          label: "item-7"
         },
         {
-          label: "ciclosporin"
+          label: "item-8"
         },
         {
-          label: "daunorubicin"
+          label: "item-9"
         },
         {
-          label: "DC-1476469"
+          label: "item-10"
         },
         {
-          label: "DC-1577248"
+          label: "item-11"
         },
         {
-          label: "DC-1633903"
+          label: "item-12"
         },
         {
-          label: "DC-1904769"
+          label: "item-13"
         },
         {
-          label: "losatuxizumab"
+          label: "item-14"
         },
         {
-          label: "melpoerone"
+          label: "item-15"
         },
         {
-          label: "memantine"
+          label: "item-16"
         },
         {
-          label: "nicotinic acid"
+          label: "item-17"
         },
         {
-          label: "nicotinic acid and simvastatin"
+          label: "item-18"
         },
         {
-          label: "PR-1241600"
+          label: "item-19"
         },
         {
-          label: "PR-1241600"
+          label: "item-20"
         },
         {
-          label: "remifentanil"
+          label: "item-21"
         },
         {
-          label: "remtolumab"
+          label: "item-22"
         },
         {
-          label: "rthrombin"
+          label: "item-23"
         },
         {
-          label: "SC-002"
+          label: "item-24"
         },
         {
-          label: "selegiline"
+          label: "item-25"
         },
         {
-          label: "trandolapril"
+          label: "item-26"
         },
         {
-          label: "upadacitinib"
+          label: "item-27"
         },
         {
-          label: "vedolizumab"
+          label: "item-28"
         },
         {
-          label: "warfarin"
+          label: "item-29"
         },
         {
-          label: "veliparib"
+          label: "item-30"
         },
         {
-          label: "zidovudine"
+          label: "item-31"
         },
         {
-          label: "zolpidem"
+          label: "item-32"
         },
         {
-          label: "zotepine"
+          label: "item-33"
         }
       ]
     },
     {
-      label: 'AbbVie Trade Names',
+      label: 'schema_two',
       children: [{
-          label: "Abbosynagis"
+          label: "item-1"
         },
         {
-          label: "Biaxin"
+          label: "item-2"
         },
         {
-          label: "CADD-Legacy Duodopa Pump"
+          label: "item-3"
         },
         {
-          label: "CADD-Pump Batter Door"
+          label: "item-4"
         },
         {
-          label: "Cadd Pump Protective Cassette"
+          label: "item-5"
         },
         {
-          label: "Depakene"
+          label: "item-6"
         },
         {
-          label: "Daxim"
+          label: "item-7"
         },
         {
-          label: "Depakote"
+          label: "item-8"
         },
         {
-          label: "Etoposide"
+          label: "item-9"
         },
         {
-          label: "Febuxostat"
+          label: "item-10"
         },
         {
-          label: "Fenofibrate"
+          label: "item-11"
         },
         {
-          label: "Fenofibric Acide"
+          label: "item-12"
         },
         {
-          label: "Gengraf"
+          label: "item-13"
         },
         {
-          label: "Holkira Pak"
+          label: "item-14"
         },
         {
-          label: "Humira"
+          label: "item-15"
         },
         {
-          label: "Imbruvica"
+          label: "item-16"
         },
         {
-          label: "isofulrane"
+          label: "item-17"
         },
         {
-          label: "K-Tab"
+          label: "item-19"
         },
         {
-          label: "Kaletra"
+          label: "item-20"
         },
         {
-          label: "Lucrine"
+          label: "item-21"
         },
         {
-          label: "Mavik"
+          label: "item-22"
         },
         {
-          label: "Lupron"
+          label: "item-23"
         },
         {
-          label: "Mivacron"
+          label: "item-24"
         },
         {
-          label: "Nimbex"
+          label: "item-25"
         },
         {
-          label: "Norvir"
+          label: "item-26"
         },
         {
-          label: "Omiicelf"
+          label: "item-27"
         },
         {
-          label: "Procren"
+          label: "item-28"
         },
         {
-          label: "Qurevo"
+          label: "item-29"
         },
         {
-          label: "Prometrium"
+          label: "item-30"
         },
         {
-          label: "Ribavirin"
+          label: "item-31"
         },
         {
-          label: "Sevoflurane"
+          label: "item-32"
         },
         {
-          label: "Synagis"
+          label: "item-33"
         },
         {
-          label: "Targa"
+          label: "item-34"
         },
         {
-          label: "Vylvio"
+          label: "item-35"
         },
         {
-          label: "Technivie"
+          label: "item-36"
         },
         {
-          label: "Y-Connector for PEG 15"
+          label: "item-37"
         },
         {
-          label: "Y-Connector for PEG 20"
+          label: "item-38"
         },
         {
-          label: "Zemplar"
+          label: "item-39"
         },
         {
-          label: "Zinbryta"
+          label: "item-40"
         }
       ]
     },
     {
-      label: 'Therapeutic Area',
+      label: 'schema_three',
       children: [{
-          label: "Cardiovascular"
+          label: "item-"
         },
         {
-          label: "General Medicine"
+          label: "item-"
         },
         {
-          label: "Immunology"
+          label: "item-"
         },
         {
-          label: "Neuroscience"
+          label: "item-"
         },
         {
-          label: "Oncology"
+          label: "item-"
         },
         {
-          label: "virology"
+          label: "item-"
         }
       ]
     },
     {
-      label: "5-Desosaminyl-6-0-Methyl Erythronolide",
+      label: "schema_four",
       children: [{
-        label: "diltiazem"
+        label: "item-1"
       }]
     },
     {
-      label: "General Medicine",
+      label: "schema_five",
       children: [{
-        label: "General Medicine-Women's Health"
+        label: "item-1"
       }]
     },
     {
-      label: "Immunology",
+      label: "schema_six",
       children: [{
-          label: "Immunology-Dermatology"
+          label: "item-1"
         },
         {
-          label: "Immun-Gastron"
+          label: "item-2"
         },
         {
-          label: "Immunology-Rheum"
+          label: "item-3"
         }
       ]
     }
