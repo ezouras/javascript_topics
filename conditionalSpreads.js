@@ -19,7 +19,7 @@ let sourceE = {
   })
 }
 
-console.log(sourceE)
+console.log("source E is: ", sourceE) //{b:5}
 
 let sourceF = {
   ...(sourceC.children && {
@@ -27,7 +27,7 @@ let sourceF = {
   })
 }
 
-console.log("source F is ", sourceF)
+console.log("source F is ", sourceF) //{C:5}
 let arr3 = [];
 let children = ["five", "two"];
 //turn children into an object with property name children
@@ -35,6 +35,12 @@ let children = ["five", "two"];
 let childrenObj = {
   children
 }
+
+//reminder of sourceD
+/*let sourceD = {
+  label: "d"
+};
+*/
 console.log(childrenObj)
 arr3.push(Object.assign({}, sourceD, children.length && {
   children
@@ -43,4 +49,4 @@ arr3.push(Object.assign({}, sourceD, children.length && {
 //children = {children:["five","two"]}
 //if "children" exists in sourceD, replace it, because it is to the right of it
 //and it takes precedence
-console.log("arr3 is ", arr3)
+console.log("arr3 is ", arr3) //[{label:"d", children=["five","two"}]
