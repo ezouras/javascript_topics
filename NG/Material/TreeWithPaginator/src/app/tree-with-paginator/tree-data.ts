@@ -186,4 +186,58 @@ export const tree: Array<treeNode> = [{
       ]
     },
   ]
-}]
+},
+{
+  label: "Human-Transport",
+  children: [
+    {
+      label: "Motorized",
+      children: [
+        {
+          label: "car", children: [
+            {
+              label: "Honda-Car-Co", children: [
+                {
+                  label: "Honda", children: [
+                    {
+                      label: "Accord", children: [
+                        {
+                          label: "Four-door", children: [
+                            { label: "blue" },
+                            { label: "red" }
+                          ]
+                        },
+                        { label: "Two-door" }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  label: "Acura", children: [
+                    { label: "LSX" },
+                    { label: "Integra" }
+                  ]
+                }
+              ]
+            },
+            {
+              label: "FCA", children: [
+                { label: "Chrylser", children: [] },
+                { label: "Fiat", children: [] }
+              ]
+            }
+          ]
+        },
+
+      ],
+    },
+    {
+      label: "Human-Powered",
+      children: [
+        { label: "bicycle" },
+        { label: "walk" }
+      ]
+    }
+  ]
+}
+]

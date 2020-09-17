@@ -12,4 +12,8 @@ export class TreeWithPaginatorComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  filterChanged(event) {
+    console.log("event is ", event)
+  }
+
 }
