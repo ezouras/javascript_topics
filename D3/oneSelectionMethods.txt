@@ -1,0 +1,17 @@
+1/ selectino.style(property,newValue)
+selection.style("background-color","blue")
+
+2/ selection.attr(attribute,newValue)
+3/ selectin.text("new text value")
+sets inner html value
+
+4/ selection.html(new value
+
+if you  don't add the "newvalue"
+it's a "getter"
+
+if you add a new value it's a setter.
+
+ie'
+selectino.style("background-color")//returns background color for
+the element

@@ -1,0 +1,25 @@
+using the first html file, open in chrome and
+type the following int eh console to ensure that d3 loaded:
+>d3
+for version
+>d3.version
+for page title:
+>d3.select("#page-title")
+
+Select
+d3.select(<add the class or id here>)
+
+you will see a _groups and _parents property.
+the _ means you should not access directly.
+you use the word "node" and "nodes" to get the data
+d3.selectAll("li").nodes();
+d3.selectAll("li").node();
+
+d3.select("#page-title").node();
+returns the "div" representing that id:
+<div id="page-title">First D3 Example</div>
+
+STYLE
+d3.select("#page-title").style("background-color","pink");
+
+chain styles
