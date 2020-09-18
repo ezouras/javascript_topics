@@ -1,0 +1,30 @@
+Ng8 syntex:
+
+@ViewChild(CourseCardComponent,
+  {read: HighlightedDirective, static:false})
+  highlighted:HighlightedDirective
+
+  @ViewChild('foo', {static: false}) foo: ElementRef;
+
+  @ContentChild("input", { static: false })
+  input: HTMLInputElement;
+
+  static = there is ambiguity on whether the
+  che results of content child is available
+  at the time of ngOnInit or ngAfterContentInit
+  (depends on the template)
+
+  in this course, the assumption is that the query
+  results are avail only after ngAfterContentINit
+
+
+  1/Use "#" and contentChild to grab
+  projecting template data
+  how do you grab content from the parent that is being projected.
+  in our example, we rae projecting an input in the prent:
+  <child-comp>
+    <input #input
+
+  then in the child component:
+  @ContentChild("input", { static: false })
+  input: HTMLInputElement;

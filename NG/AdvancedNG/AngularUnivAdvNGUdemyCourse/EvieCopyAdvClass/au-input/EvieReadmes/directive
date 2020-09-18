@@ -1,0 +1,59 @@
+>ng g directive lib/common/name-of-directive
+
+in the parent component you have style projection:
+<reusable-child-comp>
+  <input class="normal-input" type="email" name="email" placeholder="E-mail" autocomplete="off">
+</reusable-child-comp>
+
+in the child component, you want to be able to grab the input
+and respond to events like "onBlur" or onFocus and style depending on
+the action
+
+1/ you create a directive that gets a reference to the input:
+ng g directive lib/common/input-ref
+
+2/ in the directive that is created, in the directive decorator,
+you add the component where the html is being projected (child component) to the
+selector decorator followed by the html Element that you want reference to.
+in this case the "input" ( i think you can use a class here but i'm not sure)
+@Directive({
+  selector: 'reusable-child-comp input' //us on any nested input in font awesome comp
+})
+
+3/ in the directive, create a variable that represents whether the input
+is in focus (true) or blured(false)
+focus:boolean = false;
+
+4/ create a host listener to listen to native input events. since the directive
+represents the input ,you can use this:
+@HostListener("focus") //when input is in "focus", this method is called
+onFocus() {
+  this.focus = true
+}
+
+@HostListener("blur") //when the input is "blurred", this method is called
+onBlur() {
+  this.focus = false
+}
+
+5/ In the child, use "contentChild" to get a reference
+to that input:
+
+@ContentChild(InputRefDirective, { static: false })
+input: InputRefDirective //inputRefDirective is the name of the directive class
+
+6/use "hostbinding" decorator to call a method that will either
+return true (add the class to the template) or false (don't add the class)
+
+@HostBinding('class.input-focus')
+get youCanCallMeAnythingAndIWillGetCalled() {
+  return this.input ? this.input.focus : false;
+}
+
+7/ add styling to the input-focus. when the host binding returns
+true, the styling is applied. when false, it removes it. 
+:host(.input-focus) {
+  outline: none;
+  border: 1px solid #4d90fe;
+  box-shadow: 0px 0px 5px #4d90fe;
+}

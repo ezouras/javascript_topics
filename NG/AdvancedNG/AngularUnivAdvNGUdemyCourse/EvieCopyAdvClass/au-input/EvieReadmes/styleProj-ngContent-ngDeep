@@ -1,0 +1,46 @@
+1/ Content projection
+
+you create a component with tag <app-comp-whatever>
+lets say inside of that component is an "input".
+an input can have LOTS of data:
+  placeholder,
+  form control,
+  much more..
+
+  Instead of padding ALL that data via binding ie'
+  <app-comp-whatecer [name]="" [formcontrol]="" [placeholder] -etc
+  we instead keep that information in the parent and "project"
+  itinto the component using "projection" by using
+  <ng-template> inside of the child component
+
+  <app-component>
+    <input and all the attributes>
+  </app-component>
+
+
+  and in the app component:
+  <ng-content></ng-content> = will project everything from the parent
+
+  2/style isolation
+  any tag has appended some kind of unique identifier that angular
+  gives to the component in brackets:
+  input[co-some-stuff-rep-thecomponet]
+
+  when you project, whatever is in the parent still has the parent
+  compoent in brackets tahat you may want to over ride in the child. so
+  how do you 'grab' it?
+
+3. ::ng-deep <name of tag or class>{}
+over rides styles ANYWHERE in the app for that class or tag
+example:
+  :ng-deep input{
+  some style
+  }
+  The problem with the above is that it styles every input
+  in every component
+
+4. :host /deep/ input{
+  this only effects the "host" or component.
+  you can override the style isolation if you are projecting an
+  element 
+}
