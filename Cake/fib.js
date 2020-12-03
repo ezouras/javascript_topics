@@ -16,7 +16,6 @@ if 13
 3 = add spot 4
 4 = add spot 5
 
-
 */
 const fib = (int) => {
   let fibArr = [0, 1];

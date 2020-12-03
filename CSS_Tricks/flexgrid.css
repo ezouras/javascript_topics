@@ -1,0 +1,40 @@
+body, html {
+  width: 100%;
+  margin: 0;
+  box-sizing: border-box;
+  border: 1px solid yellow;
+}
+
+.titleContainer {
+  text-align: center;
+  font-size: 2rem;
+  color: navy;
+  margin-bottom: 2rem;
+}
+
+.wrapper-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.flex-wrapper {
+  width: 500px;
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
+}
+
+.flex-wrapper>div {
+  flex: 1 1 150px;
+  border: 2px solid navy;
+}
+
+.grid-wrapper {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.grid-wrapper>div {
+  border: 1px solid green;
+}

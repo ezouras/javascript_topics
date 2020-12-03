@@ -21,6 +21,14 @@ let sourceE = {
 
 console.log("source E is: ", sourceE) //{b:5}
 
+let sourceEFalse = {
+  ...(two < one && {
+    b: 5
+  })
+}
+console.log("srouceEFalse is ", sourceEFalse)
+
+
 let sourceF = {
   ...(sourceC.children && {
     c: 5

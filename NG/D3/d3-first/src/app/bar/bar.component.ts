@@ -16,8 +16,8 @@ export class BarComponent implements OnInit {
   ];
   private svg;
   private margin = 50;
-  private width = 750 - (this.margin * 2);
-  private height = 400 - (this.margin * 2);
+  private width = 750 - (this.margin * 2);//650
+  private height = 400 - (this.margin * 2);//300
 
   constructor() { }
 
@@ -34,7 +34,7 @@ export class BarComponent implements OnInit {
       .attr("height", this.height + (this.margin * 2))
       .append("g")
       .attr("transform", "translate(" + this.margin + "," + this.margin + ")");
-    //.attr("transform", "translate(200,200)");
+    //.attr("transform", "translate(50,50)");
     //transform moves it x,y so 50px to the right, and 50 pixels down
   }
 
