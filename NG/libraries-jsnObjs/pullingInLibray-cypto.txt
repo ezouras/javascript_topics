@@ -1,0 +1,25 @@
+Could not get angular to recognize 'cyptograph' - and importing 
+it in the component did not work in the traditional way.
+
+1/ find out where the libraries .min.js file is located:
+	a/ for cypto go to node_modules->cytoscape -> dist ->cytoscape.min.js
+
+2/ import it into angular.json file as a value for the "scripts" property:
+	a/ {projects:{
+		<projects-name>:{
+     			 "architect": {
+      				 "build": {
+					"options": {           
+						"scripts": [
+	<location of js files you need to use in project>
+              "node_modules/cytoscape/dist/cytoscape.min.js",
+              "node_modules/dagre/dist/dagre.min.js",
+              "node_modules/cytoscape-dagre/cytoscape-dagre.js"
+            ]
+
+3/ in the file that I used cytoscape I "declared" it like this:
+
+	import { Component, OnChanges, Renderer2, ElementRef, Input, Output, EventEmitter } from '@angular/core';
+
+//put this right under your imports. It's a sort of import
+declare var cytoscape: any;			
