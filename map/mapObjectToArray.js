@@ -1,3 +1,9 @@
+/*
+make up a property name for the keys.
+go thru each each
+{newName:<key>, newNameTwo:<value of key>}
+*/
+
 const oddStore = {
   furnature: [{
       name: 'chair',
