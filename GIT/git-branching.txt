@@ -1,0 +1,23 @@
+Git branching
+1/ create a new branch and switch to it
+Git checkout -b branch br1
+Same as
+Git branch br1
+Git checkout br1
+
+1/ make sure you checkout the branch you want to merge into.
+a/ I want to merge into newHomePage.
+b/ I want to merge the branch “newResultsPage” into “newHomePage”
+>git checkout newHomePage
+>git status
+You should see an astrich next to “newHomePage”
+2/ merge the branch into “newHomePage”
+>git merge newResultsPage
+
+3/ merging to and from LOCAL branches
+merge changes from local_branch TO master
+git checkout master
+git merge local_branch
+merge changes from master TO local_branch
+git checkout local_branch
+git merge master

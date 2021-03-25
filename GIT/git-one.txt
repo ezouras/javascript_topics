@@ -1,0 +1,76 @@
+1/ pulling changes from remote master
+Git pull - -rebase
+<that dash dash rebase. NOT one dash>
+
+2/ create a new branch and push everything to your new branch
+Scenario: I cloned a repository and made a bunch of changes.
+They want those changes to go to a new branch.
+>git checkout -b <name of branch>
+Which is short for:
+>git branch <name of branch> = create the branch
+>git checkout <name of branch> = change to that branch
+>git branch = show all branches
+The branch you are on with have a *
+Create the branch on the reposotiry and push it
+$ git push --set-upstream origin <name of new branch>
+
+$ git push --set-upstream origin newEndpointForTableData
+
+3/ pushing branch changes to master
+git checkout master
+git pull origin master
+git merge test
+git push origin master
+
+4/ clone ONE branch only.  Clone a SPECIFIC branch
+git clone --single-branch --branch <branchname> <remote-repo>
+git clone –single-branch –branch newHomePage   https://pig.abbvienet.com/ir-search-platform/pikm.git
+
+************ Errors encountered *********************
+
+Falling back to patching base and 3-way merge…
+Auto-merging src/app/results/results.component.ts
+CONFLICT (content): Merge confict in src/app/results/results.component.ts
+Error: Failed to merge in the changes.
+Hint: use “git am –show-current-patch’ to see the failed patch.
+Patch failed at 0001  - “message for new commit”..
+Resolve all conflicts manually, mark them as resolved with
+>git add/rm <conflicted_files>”, then run
+>git rebase –continue
+5/ merge changes from a branch off of your branch
+	In the pikm project, my branch: newHomePage
+	Adam branched off of that branch: newResultsPage
+You can verify these branches by going to github and view the branches for that project.
+make sure you checkout the branch you want to merge into.
+a/ I want to merge into newHomePage.
+b/ I want to merge the branch “newResultsPage” into “newHomePage”
+>git checkout newHomePage
+>git status
+You should see an astrich next to “newHomePage”
+
+ merge the branch into “newHomePage”
+>git merge newResultsPage
+
+
+6/ I can’t see the release branch or a branch on my local repository:
+1/ git fetch -all
+2/ git branch
+If you still don’t see it, do a
+3/ git checkout <exact name of branch>
+Switched to a new branch 'release'
+Branch 'release' set up to track remote branch 'release' from 'origin'.
+
+It will link to that remove branch anyway
+$ git status
+On branch release
+Your branch is up to date with 'origin/release'.
+
+Merge your master branch changes into the release branch
+a/ I want to merge into newHomePage.
+b/ I want to merge the branch “newResultsPage” into “newHomePage”
+>git checkout newHomePage
+>git status
+You should see an astrich next to “newHomePage”
+
+ merge the branch into “newHomePage”
+>git merge newResultsPage

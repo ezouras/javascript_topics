@@ -1,0 +1,64 @@
+First level:
+root: children:[ RCh1 - rootChildOneHasChildren, RCh2 - rootChldTwoNoCHildren]
+2nd layer
+RCh1 - rootChildOneHasChildren:children:[R1Ch1Gr1 - rchildOneGrandNoKids, R1Ch1Gr2 - rchildTwoGrandKids]
+		RCh2 - rootChiildTwohasNoChildren
+3rd layer
+		R1Ch1GR1 – rchildOneGrandNoKids
+R1Ch1GR2 - rchldTwoGrandKids:children:[greatGrandChild]
+	4th layer
+		RCh1GR2Great1
+
+
+function filter(array, isMatch) {
+  return array.reduce((acc, nV) => {
+    var children = filter(nV.children || [], isMatch);
+    if (isMatch(nV) || children.length) {
+      acc.push(Object.assign({}, nV, children.length && {
+        children
+      }))
+    };
+    return acc;
+  }, []);
+}
+
+//
+array.reduce, take first value which is the root
+
+var children = filter(nv.children||, is match)
+	-> first root array children call reduce  on two children [{ label: "rootChildOneHasChildren",
+      children: [{
+        label: "rchildOnegrandNoKids"
+      }, {
+        label: "rchildTwograndkids",
+        children: [{
+          label: "greatGrandChild"
+        }]
+      }]
+		->  firs child of root child is
+
+
+
+Main array is black.
+Siblings are same color but different weight.
+Every level is a new color
+
+let nestedChildren = [
+{label: "root", children: [
+{ label: "rootChildOneHasChildren", children: [
+{label: "rchildOnegrandNoKids"}, {label: "rchildTwograndkids", children: [
+{ label: "greatGrandChild"}
+]}
+] },
+{label: "rootChildTwoNOChildren"}
+ ]}
+];
+
+First level:
+root: children:[ rootChildOneHasChildren, rootChldTwoNoCHildren]
+2nd layer
+		rootChildOneHasChildren:children:[rchildOneGrandNoKids, rchildTwoGrandKids]
+		rootChiildTwohasNoChildren
+3rd layer
+		rchldTwoGrandKids:children:[greatGrandChild]
+		rchildOneGrandNoKids

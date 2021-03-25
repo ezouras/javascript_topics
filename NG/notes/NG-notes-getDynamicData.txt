@@ -1,0 +1,42 @@
+*ngIf="(fileList$ | async)?.length > 0">
+
+1/ dynamic variable binding versus string binding:
+
+You know the string to use:
+<mat-select formControlName="StringThatWillBeUsedAsTheName">
+
+you know the variable thru an ngFor or similar:
+<mat-select #frmField [formControlName]="formFieldItem.name">
+
+2/ In order to reference the object property to a variable in the template by the same name;
+I need to create an object in the template, and have a property value of the same name:
+{name:"joe", items="arrayOfItems"}
+.ts
+someobject= { arrayOfItems:[]..}
+html template
+
+someobject[object.items]
+
+example:
+////////////////////////
+
+I have an array of objects in a data file =[ {type:dropdown, dropDownItems="impact"},..]
+I want the "drop down items" to be the items in a mat-select. so
+in the .ts
+impact = [drpDwn1, drpDwn2,drpDwn3]
+
+in the template, I have
+<mat-option *ngFor="let area of formFieldItem.dropdownItems"
+I want to loop thru the dropdown items in the .ts
+but the prperty value is the only thing that is returned which is the string 'impact' bu t
+I want it to go to the .ts and "impact" the variable
+
+Solution:
+I create an object in the TS:
+formFieldDropDownItems = {
+   impact: [array of drop down items for type impact]
+}
+
+                <mat-option *ngFor="let area of formFieldDropDownItems[formFieldItem.dropdownItems]" [value]=area.value>{{
+                    area.label
+                  }}</mat-option>
