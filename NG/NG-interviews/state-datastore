@@ -1,0 +1,11 @@
+State management.
+
+CRUD: acronynm refers to four functions that are necessary
+for implementing a persistent storage application.
+1. create 2. read 3. update. 4. delete
+
+Do you need an external data store library:
+    1/NgRX -> like redux for angular. you need a ton of
+    boiler plate code to make it work.  sometimes more boiler
+    plate code then business code.
+    2/

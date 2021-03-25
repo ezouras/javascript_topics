@@ -1,0 +1,15 @@
+ngJS = controller architecture
+ng = component
+
+what ng has that ngJS does not
+> uses type script instead of javascript
+>is mobile compliant
+ionic/ can turn it into a mobile app
+
+>has a cli ng serve, ng g c ..etc
+
+> lazy loading
+
+>SEO YES
+run on the server side / angularjs does not run on the serverside
+>server side YES

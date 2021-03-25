@@ -1,5 +1,5 @@
 let state = {
-  count: 5
+  count: 0
 };
 
 console.log("stat is ", formatCountBetter())
@@ -10,8 +10,12 @@ function formatCount() {
 
 function formatCountBetter() {
   //pick the count property of the Object
-  const {
+  let {
     count
   } = state;
-  return count === 0 ? "Zero" : count;
+  count = "Zero";
+  //count =count === 0? "Zero" : count;
 }
+
+formatCountBetter();
+console.log(state)

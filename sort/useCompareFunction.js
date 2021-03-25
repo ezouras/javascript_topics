@@ -14,7 +14,12 @@ numbers.sort((a, b) => a - b);
 //4-2 > 1 return b , the lower number
 console.log(numbers)
 
-var items = [{
+var items = [
+  {
+    name: 'Zeros',
+    value: 37
+  },
+  {
     name: 'Edward',
     value: 21
   },
@@ -23,7 +28,7 @@ var items = [{
     value: 37
   },
   {
-    name: 'And',
+    name: 'Allison',
     value: 45
   },
   {
@@ -35,20 +40,34 @@ var items = [{
     value: 13
   },
   {
-    name: 'Zeros',
+    name: 'Anne',
     value: 37
-  }
+  },
 ];
 
-//this DOES NOT work. why? it's NOT returning a value
-//so it keeps it the same
+/*
+//sort asecnding by value
 items.sort((a, b) => {
-  console.log(a.value)
-  a.value - b.value
+   return a.value - b.value
+   //  4 2 = 2 will return 2 this is ascending
 })
-console.log(items)
+*/
 
-items.sort((a, b) =>
-  a.value - b.value
-)
+
+//ascending but if the same then alphabetical by name
+/*items.sort((a,b)=>{
+  if(a.value < b.value)
+    return -1;
+  else if(a.value > b.value)
+    return 1;
+  else{
+    if(a.name < b.name )
+      return -1
+    else return 1;
+  }
+})
+*/
+
+//same as above but allwas put allison first and 
+
 console.log(items)

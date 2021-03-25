@@ -1,0 +1,65 @@
+1 / why angular ?
+
+  as an applicatnio grows, the code gets more tedioux and complex
+with jquery and vanilla javascript.
+
+javascript separates concerns
+
+
+
+framework that binds html ui and javascript model.
+why is this important ? help you reduce your effort on writing
+long lines of code
+for binding.catch
+
+so instead of document.getId("de");
+to get something from the html into the javascript page,
+then modify it;
+you can access it directly in angular
+
+View - html
+model - object in javascript
+
+viewmodel - angular.the middle place where the MOdel
+can talk to the view.
+angular = mvx - model, view etc.
+IT IS A BINDING FRAMEWORK
+
+2 / how does angular work
+angular.json contains the configuration of the app
+1. where the entry point of the app "build": {
+    "builder": "@angular-devkit/build-angular:browser",
+    "options": {
+      "outputPath": "dist/angular-starter",
+      "index": "src/index.html",
+      "main": "src/main.ts",
+      -- > entry point
+
+      2. style files to use
+
+      "styles": [
+          "src/styles.scss",
+          "node_modules/primeicons/primeicons.css",
+
+          or preprocessor type style engines
+
+          "stylePreprocessorOptions": {
+            "includePaths": [
+              "src/styles"
+            ]
+            2. main.ts creates the browser environment and
+            bootstraps app.module.ts
+3 / what does app.module.ts do
+              a.it declares all the components that will be used
+            b.it bootstraps app.componet.ts
+            @NgModule({
+              declarations: [
+                AppComponent
+              ],
+              imports: [
+                BrowserModule
+              ],
+              providers: [],
+              entryComponents: [],
+              bootstrap: [AppComponent]
+            })
