@@ -1,0 +1,50 @@
+https://www.sitepoint.com/practical-guide-angular-directives/#targetText=Angular%20directives%20are%20used%20to,%2C%20attribute%20%2C%20class%20or%20comment%20.
+
+
+Directive – function that executes whenever the Angular compiler finds it in the DOM.
+There are predefined directives (ng-repeat) or  custom ones that are called anything.
+Directives can be used in one of the following places: element, attribute, class or comment.
+
+Three different types of Directives:
+1/ Components – directives with templates.
+The other two do not have html templates and tailed for dom manipulation
+2/ Attribute directives
+Manipulate the DOM by changing its behavior and appearance.
+	<p [ngClass]=”{‘blue’=true, ‘yellow’=false}”> what evers! </p>
+	<style> .blue{color:blue}  .yellow{color:yellow} </style>
+3/ structural directives
+Create and destroy dom elements
+*ngIf
+
+
+2/ creating directives:
+Import {Directive, ElementRef} from ‘@angular/core’;
+
+
+
+
+
+
+
+@Directive({
+	Selector:’[my-error]’  //”my” is the prefix used here. We always use a prefix. Not ng though.
+				//this is to not confuse it with other html elements
+})
+
+Export class MyErrorDirective{
+	Constructor(elr:ElementRef){
+	Elr.nativeElement.style.background=”red”;
+}
+}
+
+To use.
+a/ import in the app.module.ts
+b/ then 	just add the name in an element.  You don’t need to import it into the component.
+@Component({
+	Selector: “my-app”,
+	Template:`<h1 my-error> Hello {{name}}</h1>`,
+	})
+Export class AppComponent{ name = ”Angular”;}
+
+For a costume directive that is structural, you need both the
+TemplateRef and the ViewContainerRef – see link .

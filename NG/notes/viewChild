@@ -1,0 +1,39 @@
+@ViewChild – when you need to coordinate between components beyond what is avail in the template.
+You “inject” another component (c1) into the c1.ts thru @viewChild.
+1/ call a method in c1 inside of c2.ts
+	a/ add a template reference  #handleName to the component in order to gain access to that components instance:
+	<c1 [variableInC1]=”variableInC2” #c1Instance><c1>
+	b/ from c2.ts file
+	@ViewChild(C1ComponentNameExported)
+	C1Instance:C1ComponentNAmeExported
+
+Or
+	@ViewChild(‘c1Instance’)
+	anyNameWeWant:c1ComponentNameExported
+
+	c/ if you want to write init code that uses @viewChild references, you need to write it in
+	export class C2 implements AfterViewInit{
+	ngAfterViewInit(){
+		console.log(“C1Instance is”, C1Instance);
+	}
+}
+
+2/ interact with html elements inside of the viewchild (component C1)
+	a/ add a template reference inside of the view child component. Specifically in the template
+	element you want to reference.
+1.	Example c1 code:
+<h2 #title>I’m a title inside of the child element</h2>
+              b/ you can access that #title IN the parent template!
+	In c2.ts
+	@ViewChild(“title”)
+	Title:ElementRef;
+
+3/ get the DOM element linkd to the component only
+Again- example c2 html template:
+	<c1 [variableInC1]=”variableInC2” #c1Instance ></c2>
+<input [(ngModel)]=”variableInC2”/>
+
+@ViewChild(“c1Instance”, {read:ElementRef})
+anyNameYouWant:ElementRef;
+
+4/

@@ -1,0 +1,54 @@
+apply headers to an object
+
+select and set response headers
+
+HTTP response header - used in http response that
+does not relate to the content of the message. met data in
+association with the content
+
+headers appear in an http response:
+ie'
+200 OK
+Access-Control-Allow-Origin: *
+Connection: keep-alive
+Content-Encoding: gzip
+Server:Apache
+
+(set response header)
+////////////
+
+While TCP contains information about what data has or has not yet been received, HTTP contains specific instructions on how to read and process this data once it arrives
+
+/////////////
+TCP - connection oriented. Establishes a connection before sending data
+- extensive error checking
+	-flow control
+	-acknowledgement of data
+	-sequencing of data
+- reliable - guarantees delivery of data
+- MUC SLOWER than udp
+- heavy weight
+- does not support broadcasting
+- http , https, ftp smtp and telnet
+- uses "handshake"
+	-> request syn
+	<-- sync ack
+	---> ack
+
+
+UDP - connetinoless oriented - does not establish a connectino before sending data
+- used for time sensitive transmission
+	- video playback
+	- dns
+-packets COUDL get lost
+- sends data to a target without establishing a connection
+- request the send send send without acknowlege
+	- can be open to attacks and attacker can send "spoof" packest since there is no check
+
+
+
+
+
+
+
+////////

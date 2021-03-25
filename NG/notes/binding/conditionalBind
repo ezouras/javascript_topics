@@ -1,0 +1,11 @@
+[] known as Property Binding
+<my-comp [foo]="data.bar"></my-comp>
+Case 2 {{ }} known as Interpolation
+<my-comp foo="{{data.bar}}"></my-comp>
+Case 3 Conditional handling
+<my-comp [attr.foo]="data.bar ? true : false"></my-comp>
+
+form Field example:
+<div *ngFor="let formFieldItem of importedFormFieldData" class="form-field">
+           <div *ngIf="formFieldItem.type=='dropdown'">
+               <mat-select #frmField [formControlName]="formFieldItem.name"

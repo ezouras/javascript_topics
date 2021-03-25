@@ -1,0 +1,27 @@
+WAF
+Web Application Firewall
+https://docs.aws.amazon.com/AmazonS3/latest/dev/access-control-block-public-access.html
+
+https://aws.amazon.com/solutions/implementations/aws-waf-security-automations/
+
+
+1/ to get started with WAF you create a "web ACL"
+
+2/ in order to associate the acl to your cloud distribution,
+(this is confusing),
+	a/ step1
+	add name, description as you see fit
+	**b/ RESOURCE TYPE
+		1. choose "CloudFront distributions"
+	**c/ ASSOCIATED AWS resources- optional
+		1. I typed in the s3 bucket associated with the cloudfront 		distribution:
+		aolss3test
+		2. click "add AWS resources"
+** it brings you to the page where you cloud distribution shows up
+and you can click on the box to select it, then press "add"
+
+	b/ step 2 - add rules
+		1. choose "add my own rules and rule groups"
+		2. rule type - choose  IP set
+
+IP set is "Evie_only"

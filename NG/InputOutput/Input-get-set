@@ -1,0 +1,20 @@
+Set and get directly from @Input
+//binded from a parent component and pushed down to the child thru input.
+@Input() allow:Boolean;
+Allow:Boolean;
+
+get allow():Boolean{
+Return this.allow:
+}
+
+set allow(value:Boolean){
+This.allow=value ;
+This.doSomethingElse
+}
+
+//replase @Input and remove “set allow” above with the following:
+@Input(“allow”)
+Set allow(value:Boolean){
+This.allowy = value;
+This.doSomethingElse();
+}

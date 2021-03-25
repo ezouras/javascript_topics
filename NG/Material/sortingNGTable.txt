@@ -1,0 +1,15 @@
+in order to grap a table to sort, you
+need to do the following:
+1/ In the TS file:
+this.tableDataSource = new MatTableDataSource(JsonObjWithKeyValuePairs);
+2/ in the template:
+a. <table mat-table [dataSource]="tableDataSource" matSort>
+b. <th mat-header-cell *matHeaderCellDef mat-sort-header>Column Name</th>
+
+3/ back in the .ts set the "sort" equal to the sort you defined 
+@ViewChild(MatSort, { static: false }) set content(sort: MatSort) {
+  if (sort) {
+    this.sort = sort;
+    this.tableDataSource.sort = this.sort;
+  }
+};

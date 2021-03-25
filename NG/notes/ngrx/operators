@@ -1,0 +1,56 @@
+RXJS stuff
+
+Of(…values, scheduler: Scheduler):Observable
+Is a type of observable that emits a sequence of the values passed to it.
+Const numbers = of(1,2,3,4);
+Const numberSubscription = of.subscribe(valuePassed => console.log(valuePassed))//1 2 3 4
+You can pass anything, even an object and a function:
+Const of_hodgepodge = of({name:”Evie”}, [1,2,3,4], function wazup(){console.log(“hello”)});
+Const hodgePodgeSubscribe = hodgepodge.subscribe((valuePassed=> console.log(valuePassed));
+
+debounceTime(dueTime: number, scheduler: Scheduler): Obserable
+discard emitted values from a subscription that take less than the specified time between output. Ie’
+if the debounce time is 1second.  You are moving a mouse and grabbing the location on the screen.
+Only grab it every second – any number in between throw away because there is too many.
+from the example below,
+keyUp$.pipe(
+	map((i:any) => i.currentTarget.value),  //first map the $event and grab the html value.
+	debounceTime(500) //then wait 5 ms between getting a value.
+	}.subscribe(console.log);  //only show the input every 5ms.
+
+fromEvent(htmlElement, event);
+//used for streams of data like typing in a box or search field or something.
+Const searchBox = document.getElementById(“searchBx”);
+Const keyUp$ = fromEvent(searchBox, “keyup”); //event is keyup, set it to the keyup value.
+
+
+Flattening Operators:
+http://alanpryorjr.com/2019-05-15-rxjs-flattening-operators/
+They are similar to other pipeable operators.  They begin with a source observable that is emitting values. The difference with flattening operators, is that each emitted value from the SOURCE observable is mapped to another observable.  Ie’ with JS “map” , you pass ONE value, manipulate and and return that one value manipulated. You do not return another observable.
+If there is only one value from the source observable, or there is a long time between emissions, so that the inner calculation completes before a new value from the source observable is emitted, there will be no difference in how the flattening operators behave.  The key difference is how they behave with overlapping emissions from the source.  This means you have created multiple inner observables.
+switchMap, concatMap, mergeMap and exhaustMap
+begin with a source observable that is emitting values.  You want to map that value and manipulate it
+in many ways.  Lets assume that the observable is a boss that emits tasks.   You have to do something wit heach task that is emitted.   What if you are in the middle of working on one task (map function) but you get another task.  What do you do with the new task.  You can do one of four things:
+1/ SwitchMap
+Drop what you are doing and do the new task.  Typically used with HTTP requests where a new source emission means you don’t care about or need the previous inflight request.  The current inner observable is cancelled and a new one is created.  “switch to new observable” – this is perfect for scenarios like typeaheads where you are no longer concerned about the response from the previous reqest as new input arrives.
+2/ concatMap
+You finish everything in the order in which it was received. Here, the order of operations is important.  You eventually finish everything.
+3/ MergeMap
+Work on everything as soon as it is assigned. don’t’ care about the order of operations – just do everything asap.
+4/ exhaustMap
+ONLY work on task at hand. Ignore all other requests. Ignore requests until you are done.
+Ie’ login request. There is no reason to send another authentication request until you received the first one.
+
+distinctUntilChanged(compare:function):Observable
+uses === by default.  Object references must match.
+Const source$ = from ([1,1,2,2,3,3]);
+
+Source$
+.pipe(distinctUntilChanged())
+.subscribe(console.log);
+//1,2,3  is the output.
+
+distinctUIntilKeyChanged = if you want to compare based on an object property.
+
+forkJoin(..args, selector: function):Observable
+When you have a group of observables but you only want the last emitted value of each.

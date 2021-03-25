@@ -1,0 +1,24 @@
+https://docs.aws.amazon.com/AmazonS3/latest/userguide/example-bucket-policies.html
+
+Policies: 2 kinds.  resource based (like what you put on s3 bucket) or identity based for an IAm user which I don’t use.
+Policy structure:
+Effect – allow or deny access to resource (Allow/Deny)
+principal – to whom you are allowing or denying access.  * means everyone.
+you can allow a resource acces or deny access to something.
+Resource – Resource names (arn:aws:s3:::conf-*).  this is the thing you are
+allowing or dening access to- the resource. if th eresource is an s3 bucket, you are
+writing a policy for permissions to the bucket.
+condition (optional) – grant conditions
+//////////
+
+https://docs.aws.amazon.com/AmazonS3/latest/userguide/example-bucket-policies.html
+
+Policies: 2 kinds.  resource based (like what you put on s3 bucket) or identity based for an IAm user which I don’t use.
+Policy structure:
+Effect – allow or deny access to resource (Allow/Deny)
+principal – to whom you are allowing or denying access.  * means everyone.
+you can allow a resource acces or deny access to something.
+Resource – Resource names (arn:aws:s3:::conf-*).  this is the thing you are
+allowing or dening access to- the resource. if th eresource is an s3 bucket, you are
+writing a policy for permissions to the bucket.
+condition (optional) – grant conditions

@@ -1,0 +1,25 @@
+Simple http:
+  this.http.get(someEndpoint).pipe(
+        shareReplay(1)).subscribe((value)=>{
+          if(value["someProperty"]){
+            this.queryBvSb$.next(value["someProperty"])
+          }
+        });
+
+Get http data via a service and pass service a paramater:
+    this.activatedRoute.queryParamMap.pipe(
+      switchMap((params: ParamMap) => {
+        const query = params.get("someRouteKey");
+        return this.AService.getASetOfValues(someRouteKey);//this service does the GET request.
+      })
+    ).subscribe(data => {
+      console.log("got data!")
+      console.log(data)
+
+    })
+  }
+
+//in the service:
+  public getASetOfValues(someRouteKey: any) {
+    return of("this is asset data")
+  }

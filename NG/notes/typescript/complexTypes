@@ -1,0 +1,73 @@
+1/  ontShortlist: { ontology: {} }[];
+Anything ending in “[]” is an array. So whatever is before it, it is an array of those things.
+Array<{ontology:{}}>
+is the same thing
+ontShortlist =  [{ontology:{p1:somevalue},{ontology:{someProperty:someValue}]
+
+1.b/let userTestStatus: { id: number, name: string }[] = [
+    { "id": 0, "name": "Available" },
+    { "id": 1, "name": "Ready" },
+    { "id": 2, "name": "Started" }
+];
+
+
+2/ An object that has a collection of properties of all the same type.
+type MyType = {
+    id: number;
+    name: string;
+}
+
+type MyGroupType = {
+    [key:string]: MyType;
+//key value must be a string like “one” or “1”   because it is in an array, there are many “keys” with values that //are of type “MyType”
+}
+
+//an example of an objecty with many “keys” and values of type “MyType”
+var obj: MyGroupType = {
+    "0": { "id": 0, "name": "Available" },
+    "1": { "id": 1, "name": "Ready" },
+    "2": { "id": 2, "name": "Started" }
+};
+// or if you make it an array
+var arr: MyType[] = [
+    { "id": 0, "name": "Available" },
+    { "id": 1, "name": "Ready" },
+    { "id": 2, "name": "Started" }
+];
+
+
+
+
+
+2b. This literally represents an activated route in Angular:
+interface ActivatedRouteSnapshot {
+	  url: UrlSegment[];
+	  params: {[name:string]:string};
+params is an object with many “names” whose value is a string.
+	  data: {[name:string]:any};
+
+
+	  queryParams: {[name:string]:string};
+	  fragment: string;
+
+	  root: ActivatedRouteSnapshot;
+	  parent: ActivatedRouteSnapshot;
+	  firstchild: ActivatedRouteSnapshot;
+	  children: ActivatedRouteSnapshot[];
+	}
+
+breaking down -> params: {[name:string]:string};
+params:{
+“one”:”string value”,
+“two”:”string value two”,
+..and so on.
+}
+
+
+3/ Tuple example
+// Declare a tuple type
+let x: [string, number];
+// Initialize it
+x = ["hello", 10]; // OK
+// Initialize it incorrectly
+x = [10, "hello"]; // Error

@@ -1,0 +1,15 @@
+import {Component} from '@angular/core';
+import {Location} from '@angular/common';
+
+@Component({
+  // component's declarations here
+})
+class SomeComponent {
+
+  constructor(private _location: Location)
+  {}
+
+  backClicked() {
+    this._location.back();
+  }
+}

@@ -1,0 +1,33 @@
+Use query params.  I needed a query (string) and unknown number of filter facets (facets) that have different filter domains.
+I created an interface:
+Export interface IParams{
+	Query:string;
+	Facets?:string;
+}
+*note! In order to keep the integrity of the link – you must have strings and not objects.
+Think of clever string to keep the integrity of the object in the string.
+For me: facets:”domain:facet, domain:facet, domain:facet”; key pairs in the string
+
+2/ in routing module:
+Don’t’ do anything! I’m rouing with parameters to the “results” component:
+{ path:"results", component: ResultsComponent},
+3/ to route from somewhere based on a user action. In my case, searching in a search bar or
+Selecting a filter:
+1/
+a/ create an object that has at least “query” defined as being a string.
+b/ use route.navigate to route.
+1.	The first argument being the route defined in the routing module ([“/results”])
+2.	2nd argument is an object with the “queryParams” key. It HAS TO BE “queryParms”
+3.	Set the querParams key to your object that has at least quer params defined.
+
+  search(query: string) {
+    console.log("query is ", query)
+    let filterParams:IParams = {query:query};
+    this.router.navigate(['/results'], {queryParams: filterParams});
+}
+c/ subscribe to the route in the component that will receive it:
+  this.route.paramMap.subscribe(params=>{
+	      this.query = params.get("query");
+	      this.filterSelections = params.get("filterSelections");
+	    })
+	   }

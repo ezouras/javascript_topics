@@ -1,0 +1,83 @@
+Router-outlet
+
+
+In app.module:
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { AppRoutingModule } from './app-routing.module';
+Example one – to scroll to top when coming to a new page:
+.ts file
+import { RouterOutlet } from "@angular/router";  //your exporting a RouterOutlet class
+in html file:
+<router-outlet (activate)="onActivate()"></router-outlet>  //in the class decorator, router-outlet is the selector.   “activate” is an action that happens and when the route is activated, “onActivate()” is called in the class.
+In the .ts file
+  onActivate() {
+    window.scroll(0, 0);
+  }
+
+Example two – route animations:
+In .html file
+Note the template referencfe: #outlet is equal to a name passed to the method
+<main [@routeAnimations]="prepareRoute(outlet)">
+  <router-outlet #outlet="outlet"></router-outlet>
+</main>
+Note that [@routeAnimations] is binded to the prepareRoute(outlet) method.
+Usually an animations is [@<trigger-name-forAnimation>] not equal to anything.
+
+
+
+
+
+Ie:
+[@routeAnimations]=prepareRoute(outlet)
+In app.component.ts file:
+  prepareRoute(outlet: RouterOutlet){
+  return outlet && outlet.activatedRouteData && outlet.activatedRouteData["animation"];
+
+routeAnimations can equate to one or more animations: const routes: Routes = [
+{ path:"about", component: AboutPageComponent},
+{ path:"right", component: RightPageComponent, data:{animation:"isRight"}}, //if isRight
+{ path: "left", component: LeftPageComponent, data:{animation: "isLeft"}},
+];
+in route-animations.ts file (where “slideTo”is a function)
+export const slider =
+    trigger("routeAnimations",[
+      transition("* => isLeft", slideTo("left")),
+      transition("* => isRight", slideTo("right")),
+      transition("isRight => * ", slideTo("left")),
+      transition("isLeft => * ", slideTo("right"))
+]);
+//define a function to be reused in the animations
+function slideTo(direction){ //variable direction passed from above
+  const optional = { optional: true };
+  return [
+    query(":enter, :leave",[
+      style({
+        position: "absolute",
+        top:0,
+        [direction]:0,
+        width:"100%"
+      })
+    ], optional),
+    query(":enter",[
+      style({ [direction]: "-100%"})
+    ]),
+    group([
+      query(":leave",[
+        animate('600ms ease',style({[direction]: "100%"}))
+      ],optional),
+      query(":enter",[
+        animate("600ms ease", style({[direction]:"0%"}))
+      ])
+    ]),
+  ];
+}
+
+
+
+
+
+In .ts file
+  prepareRoute(outlet: RouterOutlet){
+    //pass in dynamic data
+    return outlet && outlet.activatedRouteData && outlet.activatedRouteData["animation"];
+}

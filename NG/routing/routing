@@ -1,0 +1,81 @@
+https://angular.io/guide/router
+Angular interprets a URL as an instruction to navigate to a client generated view.
+It can pass optional parameters that help determine what data the view should present.
+The router logs activity in the browser history so that the user can use arrows to go back and forth.
+Angular router is a service.  It displays a particular components view based on the URL.
+You need to import the things you need from the package:
+import { RouterModule, Routes } from '@angular/router';
+
+Here you are importing “routerModule” and “Routes” from the router package.  By default there are no routes and you configure routes using:
+RouterModule.forRoot(); and pass an array of objects identifying the routes:
+•	No leading slahes.
+•	Router builds final url so you can use relative and absolute paths.
+•
+const appRoutes: Routes = [
+{ path: 'crisis-center', component: CrisisListComponent },
+{ path: 'hero/:id', component: HeroDetailComponent },
+** id is a parameter.  It will take a value that you pass to the view.
+{
+path: 'heroes',
+component: HeroListComponent,
+data: { title: 'Heroes List' }
+** data is additional data accessible by the ACTIVATED ROUTE.
+** I assume here the variable is “title” whose value is Heroes list
+** can use it to store breadcrumb data and other static data.
+},
+{
+path: '', redirectTo: '/heroes',
+**empty path implies the default route for the application.
+** the initial path is empty.  www.somewebsite.com/EMPTY
+pathMatch: 'full' },
+{ path: '**', component: PageNotFoundComponent } ];
+** wild card page – shown if there is no path matched up.
+Usually used for 404 page not found errors.
+
+ORDER MATTERS -first match wins paradigm.
+More specific routes should be placed before more general routes.
+Ie’ the wild card match should be last because it will match every single
+Time and every thing will be page not found.
+
+
+ @NgModule({
+imports: [ RouterModule.forRoot( appRoutes, { enableTracing: true } // <-- debugging purposes only ) //
+ other imports here ], ... })
+
+export class AppModule { }
+
+Debugging:
+There is enableTracing option with the router that by default reports the routing event to the
+Browser. As a second argument to the RouterMOdule.forRoot(yourRoutes,enableTracing:true)
+ <router-outlet> directive from router library.  A placeholder in the template for where the router displays the component for that outlet.   The component is displayed as a SIBLING element to the
+Router-outlet tag in that template.
+Navigate.  You navigate 2 ways: 1/ directly from the browser address bar.  2/ from a user action.  Ie click
+On an anchor tag.
+<h1>Angular Router</h1>
+<nav> <a routerLink="/crisis-center"
+routerLinkActive="active">Crisis Center</a>
+<a routerLink="/heroes"
+routerLinkActive="active">Heroes</a>
+</nav>
+<router-outlet></router-outlet
+routerLink – directive.  Gives the router control over this element.
+Paths are fixed and you assign it to a string (one-way binding)
+routerLinkActive – directive.  It is equal to the css class that will be added when the link becomes active.
+It is space delimited. So classname space another class name.
+[routerLinkActive]= “active fluffy” or you can bind it to a template property that returns a string.
+
+[routerLinkActiveOptions] = by default, it goes thru the link tree (parent/child /any other child) and they
+Are all  assigned the bind.  However, you can set it to {exact:true} that will only assign the exact link the role.
+
+After a successful rout – activatedRoute objects keep track of the current state of the router.  You access the current route state from anywhere in the application by using the routerState service and the
+routerState property.   The RouterState has ActivatedRoute (s).  Each of these activatedRoute (s) has methods that allow you to traverse up and down the route tree to get info from parent, child and sibling routes.
+
+ActivatedRoute – the route path and parameters of the route are available thru an injected service called ActivatedRout.  Properties include
+url – observable path – an array of strings. Each string representing a different part of the path.
+Data – observable – data object for the route. Any resolved falues from the “resolve guard”
+paramMap – observable that has a map of the required and optional parameters specific to the route.
+
+
+https://angular.io/guide/router#resolve-guard
+Resolver – prefetch data from the server so it’s ready the moment the route is activated. It allows you to handle errors before routing to the component. You delay rendering the routed component until all the necessary data has been fetched.   You generate a resolver Service for a given component that you would navigate to.  You might have this data already in the components ngOnInit method for the component that you navigate. You remove the relevant data from ngOnINit and put it in the service.
+In this service you implement a resolve() method that could be a promise, observable or sync return value.

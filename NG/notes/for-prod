@@ -1,0 +1,15 @@
+Angular production:
+https://angular.io/guide/deployment
+Angular run production locally to make sure it works.
+>ng serve –prod
+Or in our case:
+>ng serve – prod –disable-host-check –host lvh.me –port 9000
+TWO dashes
+
+Create the files needed for production
+>ng build –prod
+TWO dashes
+The output folder is:
+ProjectFolder/dist/project_name
+If you want to chang the output path, you can change the
+outputPath property in the angular.json file.

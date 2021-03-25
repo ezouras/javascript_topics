@@ -1,0 +1,2 @@
+<c1 [variableInC1]=”variableInC2”></c2>
+<input [(ngModel)]=”variableInC2”/>

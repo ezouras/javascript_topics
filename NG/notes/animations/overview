@@ -1,0 +1,96 @@
+NG animations
+Basics:
+1/ import statements in app.module
+Import { BrowserModule } from ‘@angular/platform-browser’
+Import { BrowserAnimationsModule } from “@angular/platform-browser/animations”;
+@NgModule({
+Imports:[
+	BrowserModule,
+	BrowserAnimationsModule,
+]
+
+2/ import into component.ts using animation:
+Import { trigger, state, style, animate, transition} from “@angular/animations”;
+
+@component({
+Selector:…
+Animations:[ nameOfAnimation, eachOneOfThem,..]});
+
+2/ definitions:
+Define an animations:
+Const nameOfAnimation = trigger(“triggerName”, [
+	States,
+	Transitions.
+]
+
+State – needs a name.  needs style.
+You “transition” from one state to another.  When you get to that state, you
+Apply those styles:
+State(“name”, style({ backgroundColor:”green”, opacity:0.5})
+Use camelCase for styles. If you add more than one
+In an animatinos definition, states are placed in an array,
+Each state separated by a comma.
+Animate
+You don’t need to defin an “animate” – you can “transition”
+From one state to another with fading, or taking an amount of time.
+It will just transition to that state.  But in order to
+“animate” the transition, you define “animate” in the transition (transition described below)
+Animate(“duration delay easing”);  you only need duration
+Ie
+Animate(“.2s 100ms” ) // waite for 1oo ms and then take .2s to animate
+Transition
+Where you add the above – the states (from <-> to) and the animate (how to animate between)
+Transition(‘statefrom => stateTo”, [
+Animate(“2s”),
+]),
+
+Add to an template element:
+<div [@triggerName]= “expression evaluating to A STATE” …</div>
+Example:
+<div [@openClose]=”isOpen? ‘open’:’closed’”>
+The state can be a variable in the class.
+In .ts:
+@Component({
+Selector:’’,
+Animations:[
+	Trigger(“openClose”,[
+		State(“open”, style({
+		 ..styles }))
+		State(“closed”, style({
+			..styles}))
+		Transition(‘open=>close’, [
+			Animate(“0.5s”)])
+		Transition(“close=>open”,[
+			Animate(“.1s”)])
+
+In code:
+	Toggle(){
+	This.isOpen = !isOpen;
+}
+
+
+Transitions and Triggers
+Using * with transitions.  Can transition to a specific state or ANY state.
+Transition(“* => open”, [ animate(“1s)])
+If you transition TO an open state, from anything, animate for 1s.
+Using * with styles.
+Transition(“* => open”, [ animate(“1s”, style({opacity:*}))]);
+Use whatever style is current and animate fro there. It’s a “fallback” state.
+So, the initial state might not have any style defined in this aniation – so use whatever it is.
+
+
+Void state:
+Used for leaving and entering a page.  Also a “fallback”
+•	*=> void  OR use :leave (that’s easier)
+The above is from one state (*) to another state (void)
+Here we are saying; when you leave a view, regardless of the state ti was in.
+Void => *  or use :enter
+	       Here we are saying when you ENTER a view (void is the previous view), regardless of original state of view. * any state including void.
+
+In a nutshell – regardless of state, animate based on animation.  You don’t need a state.
+You can do this for *ngIf statements, if the div is added, the “enter” animation is applied.
+You can do this for route animations when you :enter a new page.
+If you do , you don’t need to set it equal to a state:
+<div @nameOfTrigger *ngIf=”isShown” class=”some class”>
+	<p> inserted box </p>
+</div>

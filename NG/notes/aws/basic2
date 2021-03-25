@@ -1,0 +1,70 @@
+AWS Terms:
+
+endpoint:
+an endpoint is any device that is phyiscially an endpoint on a network.
+It is represented by a URL. The url consists of the IP address or a hostname
+representing the ip address.  This URL alows an api to gain access
+to a resource.
+ The endpoint needs an ip address that may or may not
+be private or on a private network. the api is a set of protocols that allows
+communicatoin between two systems.
+
+subnet - a logical subdivision of an IP network.
+
+
+API Gateway
+A way to create an interface in which clients interact with resources.
+ie' you can add a lambda functino to interact with
+an s3 bucket, etc.  YOu can make an API private so that it can
+only be accessed in a VPC.  the API will create a link so that the client
+can use the link to access soem kind of resulting data with the interaction
+between the two being the gateway.  However, API gateway does not
+support a costume domain name for  a private API.  I don't know to the extent
+that you can control the link name.  the endpoint, that is targed via the api,
+is the resource or data. if it's private, you target a vpc endpoint.
+
+
+Transit Gateway
+a way connect vpc to abbvie on premise networks
+on vpn you are on abbvienet (connected to the private network)
+which is open to the aws vpc via a transit gateway
+
+ENI
+Elastic Network Interface.
+a networking component in a vpc
+represents nic.  includes a private ipv4 address and possibly
+a 2nd IP address
+
+NIC - nework interface card ( what is it once a physical card?)
+serces as a gateway between a server (virutal or not) and the network.
+
+ACL - access control list
+list of permissions associated with an object.  an ACL (object) specifies which
+users or system processes are granted access to objects
+
+
+AWS VPC - Virtual Private Cloud
+
+Open VPN - control access to stuff
+VPC has a IPv4 address range.
+
+
+network origin control -
+origin -scheme, host and port of a URL
+ie' document from origin: https://example.doc/doc tries to access he dom
+of document retrieved from https://example.com/target.html. user agent will
+disallow because the origin of first doc (http, example.com, 80) does not
+match origin of 2nd (https, example.com , 443)
+
+
+API - how components interact with each other.
+IT does not represent the resource data or the database data.
+
+REST api - get a state of the resource.
+CRUD - 4 basics of persistant data //http resource data:
+Create - post
+Read - get
+Update - put/patch
+Delete - delete
+
+can be used to get api resource data:

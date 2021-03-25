@@ -1,0 +1,12 @@
+NG libraries
+
+>ng new <name of workspace>
+ng new library-workspace-one –create-application=false
+cd library-worspsace
+>ng generate library <name of lib>
+ng generate library comp-lib
+>ng generate applicatnion<name of app>
+ng generate applicatoin comp-lib-app
+To build a component library:
+>ng build –project=<name of component library>
+$ ng build --project=comp-lib

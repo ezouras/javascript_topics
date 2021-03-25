@@ -1,0 +1,38 @@
+1/ create component in a specific folder
+Default is in the “app” folder so put any subfolder to that.
+ng g component browse/browse-ont
+ng g component browse/browse-concept
+
+
+localStorage
+In JS there is both localStorage and sessionStorage that you can use to store things locally.
+localStorage.setItem(“key_name”, “value for key”);
+localStorage.getItem(“key_name”);
+
+@Input decorator
+Bound to a DOM property in the template.
+@Component({
+ selector: 'bank-account',
+template: `
+ Bank Name: {{bankName}}
+ Account Id: {{id}} `
+ })
+
+class BankAccount {
+ // This property is bound using its original name.
+@Input() bankName: string;
+//<bank-acount bankName=”someName” in template that calls it
+// this property value is bound to a different property name
+// when this component is instantiated in a template.
+@Input('account-id') id: string;
+//account-id – name in calling template.  Id – name in THIS template.
+//<bank-acount account-id=”somestring” will set this impot and set it to “id”
+// this property is not bound, and is not automatically updated by Angular normalizedBankName: string;
+}
+@Component({
+selector: 'app',
+template: `
+<bank-account bankName="RBC"
+account-id="4747"></bank-account> `
+})
+class App {}

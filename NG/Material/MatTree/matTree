@@ -1,0 +1,79 @@
+https://www.tutorialspoint.com/angular_material7/angular_material7_tree.htm
+uses a recursive js reduce function to get the datasource.
+https://material.angular.io/cdk/tree/api
+NG Material Tree
+FlatTreeControl -> @angular/cdk/tree
+Class that defines operations for a single FLAT data node.
+Flat in that there is nothing NESTED.  A flat node does not define it’s children.
+Instead, it simply states whether or not it is expandable, and it’s level.
+someName: FlatTreeControl<flatfilenodeclass>
+MatTreeFlatDataSource
+MatTreeFlattener ->@angular/material/tree
+A class used to convert a normal type of node (with nested children data)  to a FLAT node.
+Transform nested nodes of type “T” to flattened nodes of type “F” (T n F are generic types, you decide).
+Example “T” node:
+SomeNode: { key: 'Fruits', children: [ NodeOne: { key: 'Apple', }, NodeTwo: { key: 'Pear', } ] }
+Example “F” nodes (FLAT! After flattening)
+NodeOne: { key: 'Apple', expandable: false, level: 2 }, NodeTwo: { key: 'Pear', expandable: false, level: 2 } and the output flattened type is F with additional information.
+https://material.angular.io/components/tree/api
+
+Here we define FLAT node:
+Export class FlatNodeFileClass{
+	Constructor(
+Public expandable:Boolean,
+Public filename: string,
+Public level:number,
+Public type:any) //this last “type” is anything YOU want the node to “know”
+}
+Name_for_tree_control:FlatTreeControl<flatNodeFileClass>;
+
+Here we define a regular node. It “knows” its’ children. It has “nested” data. It’s not flat.
+Export class FileNode{
+Children: FileNode[];
+Filename: string;
+Type:any;
+}
+
+Difference between filenode and flatfileNode
+fileNode – has nested children.not flat.
+flatFileNode – has a constructor to identify if it’s exapandable  and its level. No nested data. It’s flat.
+
+
+
+
+Component.ts example:
+**TREE CONTROL**
+treeControl:FlatTreeControl<FileFlatNode>;
+//adds methods to the FileFlatNode. FlatTreeControl is a class for operations on a single node.
+this.treeControl = new FlatTreeControl<FileFlatNode>(this._getLevel,this._isExpandable);
+fileFlatNode has a constructor – “public expandable:Boolean” and “public level:number”
+you pass two callbacks in the flatTreecontrol class.  One to get the flatnode level, one to
+get the flat node is expandable.
+These methods tell “FlatTreeControl” how to get the level and if expandalbe from the fileFlatNode.
+private _getLevel =(node:FileFlatNode)=>node.level;
+//node must have a level, part of the flatNodeContructor
+private _isExpandale = (node:FileFlatNode)=>node.expandable
+//node must have a “expandable” property, part of the flat node constructor
+*** TREE FLATTENER ***
+treeFlattener: MatTreeFlattener<FileNode, FileFlatNode>;
+this.treeFlattener = new MatTreeFlattener(this.tranformer, this._getLevel, this._isExpandable, this._getChildren);
+transformer = (node:FileNode, level:number)=>{
+return new FileFlatNode(!!node.children,node.filename,level,node.type); }
+getChildren is a function that returns the node children as an observable. It’s an array of “fileNodes”
+private _getChildren = (node:FileNode):Observable<FileNode[]>=> observableOf(node.children);
+**** DATA SOURCE  ****
+This.dataSource = new MatTreeFlatDataSource (this.treeControl, thie.treeFlattener);
+
+EXAMPLE HTML template for the above:
+<mat-tree [dataSource] = “dataSource” [treeControl]=”treeControl”>
+	<mat-tree-node *matTreeNodeDef = “let node” matTreeNodeToggle matTreeNodePadding>
+		<button mat-icon-button disabled></button>
+	</mat-tree-node>
+	<mat-tree-node *matTreeNodeDef = “let node; when: hasChild” matTreeNodePadding>
+<button mat-icon-button matTreeNodeToggle [attr.aria-label]=’”toggle”+node.filename’>
+	<mat-icon class=”mat-icon-rtl-mirror”>
+	{{treeControl.isExapanded(node)? ‘expand_more’:’chevron_right’}}
+	</mat-icon>
+</button>
+	</mat-tree-node>
+</mat-tree>

@@ -1,0 +1,90 @@
+ParamMap and QueryParamMap
+(.rtf for full color effect)
+
+ParamMap for routes like user/:id. Id param belongs only this route.
+QueryParamMap is for eg. user/:id?tab=edit. Tab is a global query param, it can be read from the ActivatedRoute in the user route's component as well as any of its ancestors.
+
+Overview:
+1/ defining routes in the route module:
+a/ParamMap:
+const appRoutes =[ {
+path: 'rootRoute/:p1/:p2’,
+      component: someComponent
+}]
+b/queryParamMap:
+const appRoutes =[ {
+path: 'rootRoute’,
+      component: someComponent
+}]
+*might be best to define the queryParam obj in a model
+
+2/ component imports for both:
+import { Router } from '@angular/router';
+constructor = public router: Router
+
+3/ component sending parameters
+paramMap: this.router.navigate([`/search/route1/${parameter1}/${parameter2}`]);
+QueryParamMap: this.router.navigate(['/search/results'], { queryParams: params });
+<a [routerLink]="['/products']" [queryParams]="{ order: 'popular'}
+
+4/ component receiving paramaters
+    a/ this.route.paramMap.subscribe(params => {
+      this.iri = params.get('parameter1');
+      this.meshIri = params.get('parameter2');
+}))
+
+b/  this.route.queryParams.subscribe(params => {
+param1 = params.parameter1;
+param2 = params.parameter2;
+
+
+
+Example:
+Browse = Route1
+Results = Route2
+const appRoutes =[ {
+path: 'routeOne/:iri/:ontologyIri/:matched/:conceptOnly',
+      component: BrowseComponent,
+      data: {animation: 'BrowsePage'},
+      canActivate:[AuthGuard]
+},
+{
+      path: 'route2',
+      component: ResultsComponent,
+      canActivate: [AuthGuard]
+    }];
+
+
+Route classes being used:
+private route: ActivatedRoute,
+
+Setting up the Params to be received by another component:
+import { Router } from '@angular/router';
+public router: Router,
+Route1
+let params = this.ontology ? { q: query, ontology: this.ontology } : { q: query };
+this.router.navigate([`/search/route1/${parameter1}/${parameter2}`]);
+Route2
+let params =  { parameter1: query, parameter2: this.ontology }
+*note there is an extra key = “queryParams”
+this.router.navigate(['/search/results'], { queryParams: params });
+from the template:
+<a [routerLink]="['/products']" [queryParams]="{ order: 'popular'}">
+  Products
+</a>
+
+
+
+Breaking down the params to be used in the receiving component by routing:
+private route: ActivatedRoute,
+
+In constructor of route1 component:
+    this.route.paramMap.subscribe(params => {
+      this.iri = params.get('parameter1');
+      this.meshIri = params.get('parameter2');
+}))
+
+in constructor of route2 component:
+  this.route.queryParams.subscribe(params => {
+param1 = params.parameter1;
+param2 = params.parameter2;

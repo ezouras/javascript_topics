@@ -1,0 +1,29 @@
+https://ultimatecourses.com/blog/ng-class-angular-classes
+Conditional styling:
+1/ add or remove ONE style
+<div [className]="modalOpen ? 'classNameInCssFile':''">
+*don’t use this one, use the shorthand one below.
+a/ modalOpen is a boolean value in the .ts file. If its true, add “app-modal-body”
+class to the element. Otherwise, don’t do anything.
+
+Short hand:
+<div [class.classNameInCssFile]=”modalOpen”>
+If it’s true, add class to element. If false, remove class from element. \
+II/ add or remove MULTIPLE styling
+Same thing as above with NGclass:
+<div [ngClass]=”{classNameInCssFile: modalOpen}”>
+*NOTE – DON’T USE DASHES! Or if you do use literals
+<div [ngClass]=”{‘is-active’:modalOpen}”
+Where “is-active” is the class name. will add it to the element if
+modalOpen is true.
+
+Multiple classes:
+<div [ngClass]=”{
+	‘is-active’:condition,
+	‘is-inactive’:!condition,
+	‘is-focused’:condition && anotherCondition,
+}”></div>
+
+
+    <!--<div [style.background]="'url('+currentImage+')'" [style.backgroundSize]="'cover'" [style.backgroundPosition]="'center'" ng-class="{'show':'isCurrent','hide':'!isCurrent','image':'true'}"">
+    </div>-->

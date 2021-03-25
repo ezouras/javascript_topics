@@ -1,0 +1,42 @@
+1/ forEach for deep object
+
+var images = [];
+_.eachDeep(imgCollection,function(value, key, path, depth, parent){
+  if(key=="key1" && value=="take this")
+    images.push(parent);
+});
+
+Deep find/contains/filter
+  objColor = [
+    { color: "blue", hue: { r: 5, g: 4, a: 3 } },
+    { color: "blue", hue: { r: 6, g: 7, a: 8 } },
+    { color: "green", hue: { r: 5, g: 9, a: 3 } },
+    { color: "white", hue: { r: 5, g: 6, a: 3 } },
+    { color: "blue", hue: { r: 1, g: 4, a: 3 } },
+    { color: "red", hue: { r: 5, g: 4, a: 3 } },
+  ]
+    let obj = { r: 5, g: 6, a: 3 };
+
+2/ Contains – only array.
+//only works on arrays
+    let isContains = _.includes(this.objColor, { "hue": obj });  /false – only for arrays.
+3/ find – returns first found deep object in array
+//returns the object found in the array – first one
+    let isFound = _.find(this.objColor, { "hue": obj }); //{color: "white", hue: { r: 5, g: 6, a: 3 }};
+//returns an array of all that is found. If one, then an array with one object.
+4/ .filter   - return all the matches
+    let isFilter = _.filter(this.objColor, { "hue": obj });
+
+
+5/ find and remove deep object:
+    let newSearchArray = _.filter(this.queryBvSb$.getValue()[searchType], searchObj =>
+      !(_.isEqual(searchObj["queryObj"]["queryParams"], params["queryObj"]["queryParams"]))
+    );
+
+Response = responseHeader, resp.response
+Resp.reponse.docs
+_.flow([_.get('response.docs'), _.map(cleanResult)])(resp);
+_.flow = Callse the methods in order.  Uses the response from the first method as
+Parameters to the next method.
+
+_.get => get value of the object at path path.

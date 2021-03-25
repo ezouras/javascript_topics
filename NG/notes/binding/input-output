@@ -1,0 +1,35 @@
+Binding from html tag:
+Methods IN CHILD emit and trigger method in parent  (eventEmitterInChild)=methodInPrent(whatever is passed)
+Change in property value and property value IN PARENT can bind and change property in Child
+[somepropertyInChild]=setitEqualToPropertyInParent
+
+<childTag (EvntEm)=PrntMehod(whatevs) [propInChild]=setToParentProperty></childComp>
+Methods in child trigger parent method.  From child to parent
+Prop value in parent trigger and change property in child  -from parent to child
+
+1/ @Output – from CHILD tag to PARENT tag
+Method called in child component – it triggers the parent method.
+Parent.html
+<childComp (emitterInChild)=”methodInParent($event)”></childComp>
+From child – must @output
+From parent- call meth0d=methodInParent.
+Child.ts
+@Output() emitterInChild = new EventEmitter();
+
+eventToPass=0;
+
+userClicked(){
+this.eventToPass++
+this.emitterInChild.emit(this.eventToPass);
+}
+2/ @Input – from PARENT to CHILD
+Something happens in Parent component – it sets a property in the child component
+Parent.html
+<child-comp nameInChild=”someNameInParent”  idInChild=”idInParent”></childComp>
+
+From Parent to child
+<parent>
+<childComp>
+</childComp>
+
+</parent>

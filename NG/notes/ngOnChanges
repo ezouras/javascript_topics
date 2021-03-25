@@ -1,0 +1,25 @@
+NgOnChanges-SimpleChange
+How it’s described in Ang Doc:
+ngOnChanges(changes: {[propKey: string]: SimpleChange}) {
+What it actually means.
+Changes – any name you want to give changes coming down the pipe.
+It is a type of Object with as many “simpleChange” as properties you bind to it.
+propKey – the name of the property you bind.
+Example:
+Parent component has this in the html template:
+  <app-tree [dataThatChanges]="dataThatChanges" [conceptData]="conceptData"></app-tree>
+The two binding properties are “dataThatChanges” and “conceptData”
+Therefore, when there is a change in the parent of either property,
+In the CHILD component (the app-tree) you can use this method:
+  ngOnChanges(dataUpdate: SimpleChanges) {
+}
+Where “dataUpdate” is the same as “changes” in the ng example.
+When there is a change in both the dataThatChanges and the conceptData, the “dataUpdate”
+Object will look like this:
+{dataUpdate:SimpleChange, dataThatChanges:SimpleChange}
+There is key representing each variable and a “SimpleChange”object to represent those values/changes.
+IF ONLY ONE PROPERTY CHANGES
+The object will ONLY HAVE THE KEY FOR THE CHANGING PROPERTY
+Example, only the dataThatChanges changes in the parent.  The “dataUPdate” will now be this:
+{dataThatChanges:SimpleChange}
+There will be no key for conceptData. And vice versa if conceptData changes with no dataThatChanges

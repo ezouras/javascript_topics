@@ -1,0 +1,19 @@
+Angular ERrors:
+1/ Use compiler option ‘—downlevelIteration’ to allow iterating of iterators
+FIX:
+in the top level tsconfig.json file, add “downlevelIteration” property and set
+it
+{
+  "compilerOptions": {
+    "target": "es5",
+    "downlevelIteration": true
+  }
+}
+source: https://mariusschulz.com/articles/downlevel-iteration-for-es3-es5-in-typescript
+
+2/ when using a spread on a set:
+unique= new Set(some array with duplicates);
+uniqueArr = [...unique] gave he error:
+‘invalid array length’
+I never figured it out, so I used this instead which worked:
+Solution: Array.from(unique)

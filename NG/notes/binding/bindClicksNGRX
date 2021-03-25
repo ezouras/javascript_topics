@@ -1,0 +1,52 @@
+Work – something encapsulated in an observable.
+
+
+Restart timer when calling a method:
+Method1:
+	a/ In html template:
+	(click) = clickmethod();
+	b/ in ts
+1.	Define a subscription:
+startTimerSubscription: Subscription;
+
+2.	Define a method that subscribes to the subscription
+subscribeToTimer(){
+			this.startTimerSubscription = timer(3000).
+				Subscribe(()=>{
+					This.isBiggerCircle = false;
+				});
+}
+
+		Timer is an observable. It does work – it counts down from 3seconds.
+		When finished it calls the next method.  “subscribe” is like next.
+		It does the work in the subscribe method when it is done counting down.
+
+3.	Unsubscribe if it is already started, otherwise, subscribe:
+clickMethod(){
+	if(this.startTimerSubscription)
+		this.startTimerSubscription.unsubscribe();
+			this.subscribeToTimer();
+
+Method 2:
+	Const work$ = the timer and what to do when it is done with counting.
+	Const trigger$ = the mouse event from the page as an observable.
+
+Const workExecutedOnTrigger$: Observable<T> = trigger$.pipe(
+	switchMap(triggerValue => work$)
+);
+In html:
+<div [button]=”button”>click me!</div>
+
+In Ts:
+@ViewChild(“button”) button;
+Clicks$:Observable<any>;
+Timer$ = timer(3000);
+ngOnInit(){
+	this.clicks$ = Observable.fromEvent(this.button.nativeElement, “click”).pipe(
+	switchMap(value => this.timer));
+)
+
+Constructor(){
+This.clicks$.subscribe((val)=>{
+This.circleMakeSmaller=true
+});}

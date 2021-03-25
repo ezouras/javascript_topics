@@ -1,0 +1,31 @@
+https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-1.html
+Key value pairs – in an object.
+Interface Person{
+	name: string,
+	age:number,
+	occupation:string
+}
+Key = name, age, occupation.
+Value -> the values of the keys.
+
+Another word used is “property names”
+The properties of “Person” are name, age and occupation.
+The name property of “PersonA” might be “George”
+Type K1 = keyof Person;
+K1 will be of type “string”
+And the string can either be “name”, “age” or “occupation”
+
+Function getProperty<T, K extends keyOf T>(obj: T, key: K){
+	Return obj[key]; //inferred type is T[K]
+}
+
+Let x = {foo:10, bar:”hello!”};
+
+Let foo = getProperty(x,”foo”);// 10
+
+Interface Sort<T>{
+	Property:keyof T; //is the property value the value of the key? Or the  key itself?
+	Order: “asc”|”desc”;
+}|
+
+}

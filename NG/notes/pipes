@@ -1,0 +1,6 @@
+{{attachePanel.effectiveDate | date:"mediumDate"}}
+
+pipe based on Condition
+
+*ngFor= let columnHeader of allDisplayedColumns … 
+ <div>{{allDisplayedColumns.length > 12? (columnHeader | slice:0:7) : (columnHeader)}}</div>

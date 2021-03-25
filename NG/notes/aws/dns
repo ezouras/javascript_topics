@@ -1,0 +1,23 @@
+DNS / private hosts
+
+
+/etc/hosts file
+mappings of hostnames to IP that gets established
+
+Difference between a hostname and a domain name:
+
+hostname: name given to a machine or endpoint.
+if I go to cmd prompt I can type in
+hostname
+and get a name for my computer.
+
+domain: name given to the "network"
+
+
+When you purchase a "domain name" , you are really purchasing a name for a host on a domain.
+.com is the domain in which you purchase a name for.
+.net is another domain you could purchase a name for
+<machine_name>.<domain>
+
+The internet is a large public network.
+my home is a private network that has a router.
