@@ -1,0 +1,208 @@
+import { Component, OnInit } from '@angular/core';
+import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
+import { FlatTreeCbasicrol } from '@angular/cdk/tree';
+
+
+
+
+@Component({
+  providers: [categoryTreeDb]
+})
+export class basiccategoryTreeComponent implements OnInit {
+  loadingTree: boolean = true;
+  selectedNodeName: string;
+  treeCbasicrol: FlatTreeCbasicrol<FlatTreeNode>;
+  treeFlattener: MatTreeFlattener<categoryNode, FlatTreeNode>;
+  expandableFlatNodes: Array<FlatTreeNode>;
+  flatNodes: Array<FlatTreeNode>;
+  tree: MatTreeFlatDataSource<categoryNode, FlatTreeNode>;
+
+
+  constructor(private selectionService: SelectionService, private db: categoryTreeDb) {
+
+    this.treeFlattener = new MatTreeFlattener(
+      this.transformer,
+      this.getLevel,
+      this.isExpandable,
+      this.getChildren
+    )
+
+    this.treeCbasicrol = new FlatTreeCbasicrol<FlatTreeNode>(this.getLevel, this.isExpandable);
+    this.tree = new MatTreeFlatDataSource(this.treeCbasicrol, this.treeFlattener);
+    db.dataChange.subscribe(data => {
+      this.tree.data = data;
+      this.loadingTree = false;
+
+    });
+
+    this.tree._flattenedData.subscribe(dflatData => {
+      this.flatNodes = dflatData;
+      this.expandableFlatNodes = dflatData.filter(node => node.expandable);
+    })
+
+  }
+
+
+  ngOnInit() {
+    /*when the user selects a category, this is how the component gets updated */
+    this.selectionService.getcategorySelectionUpdate().subscribe(
+      (category: string) => {
+        this.findAndHighlightNode(category);
+      }
+    )
+
+  }
+
+
+
+
+
+  transformer = (node: categoryNode, level: number) => {
+    return {
+      expandable: !!node.children && node.children.length > 0,
+      name: node.label,
+      level: level,
+      parent: node.parent ? node.parent : null
+    };
+  }
+
+
+
+  getLevel = (node: FlatTreeNode) => node.level;
+  isExpandable = (node: FlatTreeNode) => node.expandable;
+  isPaginator = (_: number, node: FlatTreeNode) => {
+    return node.name.indexOf("PAGINATOR") !== -1 ? true : false;
+  }
+
+  /**********
+  for each child node, add the parent so
+  that in turn, in the transformer, can get the parent
+  node for the paginator
+  **********/
+  /*getChildren = (cNode: categoryNode): Observable<categoryNode[]> => {
+    let children = cNode.childrenChange;
+    return children
+  }
+  */
+  getChildren(cNode: categoryNode) {
+    return cNode.children;
+  }
+
+  hasChild = (_: number, _nodeData: FlatTreeNode) => _nodeData.expandable;
+
+
+  /*********
+  Background: The tree has a root representing the basicology.
+  first set of children are "basicology schemas"
+  basicology schema children are ideas.
+  If there is a new idea selected from the search bar; specifically the typeahead results,
+  find it in the tree and highlight it
+  IF there is a new meshIRI, then load the new basicology tree
+  **********/
+
+
+  findAndHighlightNode(categorySelection) {
+    const categoryTreeNode = this.db.findNode(categorySelection, this.tree.data[0].children);
+    if (categoryTreeNode) {
+      this.selectedNodeName = categoryTreeNode.label;
+      const categoryFilteredTreeData: any = this.db.getParentPathForTree(categorySelection);
+      if (categoryFilteredTreeData.length) {
+        const allParentObjs = this.flattenByProperty(categoryFilteredTreeData, "children");
+        const flattenedTreeData = this.flattenData(categoryFilteredTreeData)
+
+
+        //add the root of the tree
+        allParentObjs.push(categoryFilteredTreeData[0]);
+        const nodeNamesToExpand = flattenedTreeData.map(node => node.label);
+
+        //not enough to have a paginator / expand and select
+        this.expandNodes(nodeNamesToExpand)
+      }
+    }
+    else {
+      console.log("could not find a match in the data for ", categorySelection)
+    }
+
+  }
+
+  expandNodes(nodesToExpand) {
+    this.expandableFlatNodes.forEach(fn => {
+      if (nodesToExpand.includes(fn.name) || fn.level == 0) {
+        this.treeCbasicrol.expand(fn)
+      }
+    })
+
+  }
+
+  /**********
+  When the user selects a idea on the tree,
+  this method loads the idea details on the
+  right side of the page
+  **********/
+  selectNode(nodeSelected: FlatTreeNode) {
+    //let selectedcategoryNode;
+    this.selectedNodeName = nodeSelected.name;
+    /*let treeRootNode = this.tree.data[0]
+    if (treeRootNode.label.toLowerCase() == nodeSelected.name.toLowerCase())
+      selectedcategoryNode = treeRootNode;
+    else {
+      selectedcategoryNode = this.db.findNode(nodeSelected.name, treeRootNode.children);
+    }
+    */
+
+  }
+
+  /**********
+  You can grab all the flatnodes, but only the paginator
+  flat node has the parent property defined. Therefore,
+  get the parent of the flat node,
+  **********/
+  findParentcategoryNode(flatNodeName: string): categoryNode {
+    let flatNode = this.flatNodes.filter((_) => _.name == flatNodeName);
+    return flatNode["parent"];
+  }
+
+  flattenByProperty(arr: any, property: string) {
+    if (Array.isArray(arr)) {
+      return arr.reduce(function(acc, nV) {
+        return acc.concat((nV[property]));
+      }, []);
+    } else {
+      return arr;
+    }
+  }
+  flattenData(dataArr) {
+    return dataArr.reduce((r, { children, ...rest }) => {
+      //rest is an object of the properties minus the children
+      //ie {label: "pumpiken"}
+      r.push(rest);
+      if (children) r.push(...this.flattenData(children));
+      return r;
+    }, [])
+  }
+
+  getFlatNodesFromNestedNodes(nestedNodes: Array<categoryNode>) {
+    let flatNodes = []
+    nestedNodes.forEach(cNode => {
+      flatNodes.push(this.expandableFlatNodes.find(fNode => fNode.name.toLowerCase() == cNode["label"].toLowerCase()));
+
+    });
+    return flatNodes;
+  }
+
+  isSelected(node: FlatTreeNode): any {
+    let selected = (node.name === this.selectedNodeName) ? true : false;
+    return { 'highlight-node': selected }
+  }
+
+
+
+}
+//html<mat-tree-node *matTreeNodeDef=" let node; when: hasChild" matTreeNodePadding (click)="selectNode(node)" [ngClass]="isSelected(node)">
+              <button mat-icon-button [attr.aria-label]="'toggle ' + node.filename" matTreeNodeToggle>
+                <mat-icon class="mat-icon-rtl-mirror">
+                  {{treeCbasicrol.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+                </mat-icon>
+              </button>
+              {{node.name}}
+            </mat-tree-node>

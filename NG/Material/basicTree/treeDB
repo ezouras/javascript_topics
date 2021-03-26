@@ -1,0 +1,122 @@
+/* this class creates the category tree */
+import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
+import { categoryNode, categoryData } from "./category-tree-node";
+
+//export const fullTree = ideaData;
+
+@Injectable()
+export class categoryTreeDb {
+  dataChange = new BehaviorSubject<categoryNode[]>([]);
+  rawData: any[]
+  treeData: any[];
+  //fullTree: any[];
+  isMatch = ({
+    label
+  }, filteredText) => label.toLowerCase().indexOf(filteredText.toLowerCase()) > -1;
+
+
+  constructor(private service: service, ) {
+    this.initializeTreeData();
+  }
+
+  /**********
+  load  data tree using ID
+  **********/
+  public initializeTreeData() {
+    /*
+    if (x) {
+      this.service.getcategoryTree(x)
+        .subscribe((data: any) => {
+          //assuming data is an object of objects
+          tree = [data.data];
+          this.fullTree = tree;
+          this.currentTree = this.replaceRecurseWithNodeObjects(tree);
+          this.dataChange.next(this.currentTree);
+        })
+    }
+    */
+    this.rawData = [...categoryData];
+    this.treeData = this.replaceRecurseWithNodeObjects(this.rawData);
+    this.dataChange.next(this.treeData);
+  };
+
+  /**********
+  replace each tree node with ideaNode class instance
+  This instance tracks children using a paginator and behaviorSubject
+  **********/
+  replaceRecurseWithNodeObjects(arr) {
+    let replaced = arr.reduce((acc, nV) => {
+      let nodeParameter: categoryNode = { label: nV.label };
+      let childrenObjs = this.replaceRecurseWithNodeObjects(nV.children || [])
+      if (childrenObjs) {
+        nodeParameter.children = childrenObjs
+        acc.push(nodeParameter);
+      } else {
+        acc.push(nodeParameter)
+
+      }
+      return acc;
+    }, []);
+    return replaced;
+  }
+
+
+  /**********
+  Filters tree so that only the paths
+  to the children where the "filteredText" is a
+  match is returned. in this case, there shoud only
+  be ONE matched child (idea). So the matched child
+  and all the parent nodes up to the root would be the only
+  returned path
+  ********/
+  filterTree(array, findTextMatchFn, filteredText) { //is match returns either tru or false
+    return array.reduce((acc, nV) => {
+      //first call the filter function again on the children
+      var children = this.filterTree(nV.children || [], findTextMatchFn, filteredText);
+      //passing "nV" pulls out the label and does a compare that results
+      //in either tru or false
+      let isMatch = findTextMatchFn(nV, filteredText);
+      if (findTextMatchFn(nV, filteredText) || children.length) {
+        //create  new object using Nv properties and
+        //repacing children with those matching filtered text
+        acc.push(Object.assign({}, nV, children.length && {
+          children
+        }))
+      };
+      return acc;
+    }, []);
+  }
+
+  public getParentPathForTree(selectionName: string) {
+    //return this.filterTree(this.currentTree, this.isMatch, selectionName);
+    return this.filterTree(this.treeData, this.isMatch, selectionName);
+  }
+
+
+  findNode(label: string, children: Array<categoryNode>): categoryNode {
+    let found = children.find(child => child.label.toLowerCase() === label.toLowerCase());
+    if (!found) {
+      let i = 0;
+      while (!found && i < children.length) {
+        if (children[i].children && children[i].children.length) {
+          found = this.findNode(label, children[i].children);
+        }
+        i++;
+      }
+    }
+    return found;
+  }
+
+
+  copyObj(o) {
+    return Object.assign({}, o)
+  }
+
+  nodeHasChildren(node: categoryNode): boolean {
+    return (typeof node === 'object')
+      && (typeof node.children !== 'undefined')
+      && (node.children.length > 0);
+  }
+
+}

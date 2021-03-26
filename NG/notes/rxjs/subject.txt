@@ -1,0 +1,20 @@
+  In Service:
+
+  private data$ = new Subject<string>();
+
+  getData() {
+  return this.data$;
+}
+
+setData(data: string) {
+  this.data$.next(data);
+}
+
+///in component///
+this.service.getData().subscribe(
+  (response)=>{
+    //do something with response
+  }
+)
+
+this.service.setData(someValue)

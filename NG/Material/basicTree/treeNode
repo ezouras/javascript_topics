@@ -1,0 +1,112 @@
+//import { BehaviorSubject } from 'rxjs';
+
+/** Flat node with expandable and level information
+    Can be used on any material tree for more control
+**/
+export interface FlatTreeNode {
+  name: string;
+  level: number;
+  expandable: boolean;
+  parent: any;
+
+}
+
+/*********
+This is to ensure that the constructor parameter for the
+categoryNode class has the required keys
+
+*********/
+
+export interface categoryNode {
+  label: string;
+  children?: categoryNode[];
+  parent?: categoryNode;
+  leaf?: boolean;
+}
+
+
+/*
+export class categoryNode {
+  childrenChange = new BehaviorSubject<categoryNode[]>([]);
+  public label: string;
+  private children: categoryNode[];
+  public parent: categoryNode;
+  public leaf: boolean
+
+
+  getChildren(): categoryNode[] {
+    return [...this.children]
+  }
+
+  constructor(private categoryRootNode: categoryNodeRootNode) { this.initialize(); }
+
+  initialize() {
+    this.label = this.categoryRootNode.label;
+    this.children = this.categoryRootNode.children;
+    this.parent = this.categoryRootNode.parent;
+    this.leaf = this.categoryRootNode.leaf;
+
+
+  }
+
+}
+*/
+
+export const categoryData: Array<categoryNode> = [
+  {
+    label: 'Category One',
+    children: [
+      {
+        label: 'cOne -child one',
+        children: [
+          { label: 'cOne-grandchildOne' },
+          { label: 'cOne-grandchildTwo' },
+        ]
+      },
+
+    ]
+  },
+  {
+    label: "cTwo",
+    children: [
+      {
+        label: 'cTwo -child one',
+        children: [
+          { label: 'cTwo -grandchild one' },
+          { label: 'cTwo -grandchild Two' },
+        ]
+      },
+
+    ]
+  },
+  {
+    label: "childThree",
+    children: [
+      {
+        label: 'c3-childOne',
+        children: [
+          { label: 'c3-grandchild1' }
+        ]
+      },
+
+    ]
+  },
+  {
+    label: "childFour,
+    children: [
+      {
+        label: 'c4-ch1',
+        children: [
+          { label: 'c4-grandchild1' }
+        ]
+      },
+      {
+        label: "c4-ch2",
+        children: [
+          { label: "c4-grandchild1" },
+          { label: "c4-grandchild2" }
+        ]
+      }]
+  },
+]
+  ;

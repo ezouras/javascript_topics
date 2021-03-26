@@ -1,0 +1,269 @@
+import { Component, OnInit, OnChanges, SimpleChanges, Input, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
+import { FlatTreeControl } from '@angular/cdk/tree';
+import { MatTreeFlatDataSource, MatTreeFlattener, MatTree } from '@angular/material/tree';
+import { ConceptTreeDb } from "./custom-tree-db";
+import { ConceptFlatNode, ConceptNode } from "./conceptTreeData";
+import get from 'lodash/get';
+import { Observable, forkJoin } from 'rxjs';
+import { PaginatorComponent } from './../components/paginator/paginator.component';
+
+
+@Component({
+  selector: 'app-custom-tree',
+  templateUrl: './custom-tree.component.html',
+  styleUrls: ['./custom-tree.component.scss'],
+  animations: [
+    trigger('slideFilterz', [
+      transition(':enter', [
+        style({ opacity: 0, transform: 'translateX(-30px)' }),
+        animate('350ms', style({ opacity: 1, transform: 'translateX(0px)' }))
+      ])
+    ]),
+  ],
+  providers: [TreeDb]
+})
+
+export class CustomTreeComponent implements OnInit, OnChanges {
+
+  @Input() dataID: string;
+  @Input() data: any;
+
+
+  loadingTree: boolean = true;
+  mockTreeData: any;
+  dataOnly: boolean = false;
+  shouldFindNode: boolean = false;
+  selectedNodeName: string;
+  treeControl: FlatTreeControl<FlatNode>;
+  treeFlattener: MatTreeFlattener<Node, FlatNode>;
+  expandableFlatNodes: Array<FlatNode>;
+  flatNodes: Array<FlatNode>;
+  tree: MatTreeFlatDataSource<Node, FlatNode>;
+
+  constructor(
+    private router: Router,
+    private db: TreeDb
+  ) {
+    this.treeFlattener = new MatTreeFlattener(
+      this.transformer,
+      this.getLevel,
+      this.isExpandable,
+      this.getChildren
+    )
+
+    this.treeControl = new FlatTreeControl<FlatNode>(this.getLevel, this.isExpandable);
+    this.tree = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
+    db.dataChange.subscribe(data => {
+      this.tree.data = data;
+      if (this.shouldFindNode) {
+        this.findAndHighlightNode();
+        this.shouldFindNode = false;
+      }
+      else {
+        this.loadingTree = false;
+      }
+    });
+
+    this.tree._flattenedData.subscribe(dflatData => {
+      this.flatNodes = dflatData;
+      this.expandableFlatNodes = dflatData.filter(node => node.expandable);
+    })
+
+  }
+
+  ngOnInit(): void {
+    this.loadingTree = true;
+    //this.selectedNodeName = undefined;
+  }
+
+
+  transformer = (node: Node, level: number) => {
+    return {
+      expandable: !!node.children && node.children.length > 0,
+      name: node.label,
+      level: level,
+      parent: node.parent ? node.parent : null
+    };
+  }
+
+
+
+  getLevel = (node: FlatNode) => node.level;
+  isExpandable = (node: FlatNode) => node.expandable;
+  isPaginator = (_: number, node: FlatNode) => {
+    return node.name.indexOf("PAGINATOR") !== -1 ? true : false;
+  }
+
+  /**********
+  for each child node, add the parent so
+  that in turn, in the transformer, can get the parent
+  node for the paginator
+  **********/
+  getChildren = (cNode: Node): Observable<Node[]> => {
+    let children = cNode.childrenChange;
+    return children
+  }
+
+  hasChild = (_: number, _nodeData:FlatNode) => _nodeData.expandable;
+
+
+  /*********
+  Background: The tree has a root representing the ontology.
+  first set of children are "ontology schemas"
+  Ontology schema children are concepts.
+  If there is a new concept selected from the search bar; specifically the typeahead results,
+  find it in the tree and highlight it
+  IF there is a new meshIRI, then load the new ontology tree
+  **********/
+  ngOnChanges(dataUpdate: SimpleChanges) {
+    this.selectedNodeName = get(dataUpdate["Data"], "currentValue..canonical.Label");
+    if (dataUpdate["dataID"]) {
+      this.loadingTree = true;
+      let dataID = get(dataUpdate["dataID"], "currentValue");
+      this.dataID = dataID;
+      //  this.db.loadTree(miri)
+      this.db.loadFullTree(miri)
+    }
+    if (this.selectedNodeName) {
+      if (this.loadingTree) {
+        this.shouldFindNode = true;
+      }
+      else {
+        this.findAndHighlightNode();
+      }
+    }
+  }
+
+  findAndHighlightNode() {
+    if (this.selectedNodeName) {
+      //const TreeNode = this.db.findNode(this.selectedNodeName, this.tree.data[0].children);
+      //console.log("conept node found is ", conceptTreeNode)
+      const filteredTreeData: any = this.db.getParentPathForTree(this.selectedNodeName);
+      console.log("tree to selected node is : ", filteredTreeData)
+      if (filteredTreeData.length) {
+        const allParentObjs = this.flattenByProperty(filteredTreeData, "children");
+        //add the root of the tree
+        allParentObjs.push(filteredTreeData[0]);
+        const nodeNamesToExpand = allParentObjs.map(node => node.label);
+        //paginator node with parent node is
+        let paginatorNodeWithParent = "PAGINATOR_" + allParentObjs[0].label;
+        let parentConceptNode;
+        let pageEventData;
+        let paginatorFlatNode = this.flatNodes.filter(_ => _.name == paginatorNodeWithParent)[0];
+        if (paginatorFlatNode) {
+          parentNode = paginatorFlatNode["parent"]
+          let pageNumber = parentConceptNode.getChildNodePage(PaginatorComponent.dataRange, this.selectedNodeName);
+          pageEventData = { flatNode: paginatorFlatNode, newPage: pageNumber, range: PaginatorComponent.dataRange }
+          this.pageEvent(pageEventData, nodeNamesToExpand)
+        }
+        else {
+          //not enough to have a paginator / expand and select
+          this.expandNodes(nodeNamesToExpand)
+        }
+
+      }
+    }
+    else {
+      console.log("could not find a match in the data for ", this.selectedNodeName)
+    }
+    this.shouldFindNode = false;
+    this.loadingTree = false;
+  }
+
+  expandNodes(nodesToExpand) {
+    this.expandableFlatNodes.forEach(fn => {
+      if (nodesToExpand.includes(fn.name) || fn.level == 0) {
+        this.treeControl.expand(fn)
+      }
+    })
+
+  }
+
+
+
+  /**********
+  You can grab all the flatnodes, but only the paginator
+  flat node has the parent property defined. Therefore,
+  get the parent of the flat node,
+  **********/
+  findParentNode(flatNodeName: string):Node {
+    let flatNode = this.flatNodes.filter((_) => _.name == flatNodeName);
+    return flatNode["parent"];
+  }
+
+  flattenByProperty(arr: any, property: string) {
+    if (Array.isArray(arr)) {
+      return arr.reduce(function(acc, nV) {
+        return acc.concat((nV[property]));
+      }, []);
+    } else {
+      return arr;
+    }
+  }
+
+  getFlatNodesFromNestedNodes(nestedNodes: Array<Node>) {
+    let flatNodes = []
+    nestedNodes.forEach(cNode => {
+      flatNodes.push(this.expandableFlatNodes.find(fNode => fNode.name.toLowerCase() == cNode["label"].toLowerCase()));
+
+    });
+    return flatNodes;
+  }
+
+  /*
+    filterChanged(filterText: string) {
+      this.db.filter(filterText);
+      if (filterText) {
+        this.treeControl.expandAll();
+      }
+      else {
+        this.treeControl.collapseAll();
+      }
+    }
+    */
+
+  /**********
+  When the user selects a concept on the tree,
+  this method loads the concept details on the
+  right side of the page
+  **********/
+  selectNode(nodeSelected: FlatNode) {
+    let selectedNode;
+    this.selectedNodeName = nodeSelected.name;
+    let treeRootNode = this.tree.data[0]
+    if (treeRootNode.label.toLowerCase() == nodeSelected.name.toLowerCase())
+      selectedNode = treeRootNode;
+    else {
+      selectedNode = this.db.findNode(nodeSelected.name, treeRootNode.children);
+    }
+    if (selectedNode && selectedNode['dataID']) {
+      let encodedID = encodeIDComponent(selectedNode['dataID'])
+      this.router.navigate([`/browse/data/${dataID}/${ID}/0/${this.DataOnly}`]);
+    } else {
+      console.log("no data id")
+    }
+  }
+
+  isSelected(node: FlatNode): any {
+    let selected = (node.name === this.selectedNodeName) ? true : false;
+    return { 'highlight-node': selected }
+  }
+
+  pageEvent(event, nodeNamesToExpand = null) {
+    event.flatNode.parent.updateChildren(event.newPage, event.range);
+    //get current expanded nodes
+    const expandedNodes = this.expandableFlatNodes.filter(node => this.treeControl.isExpanded(node));
+    //filter by name only
+    let expandedNodeNames = expandedNodes.map(_ => _.name)
+    if (nodeNamesToExpand) {
+      expandedNodeNames = [...expandedNodeNames, ...nodeNamesToExpand]
+    }
+    //update data with new children.
+    this.shouldFindNode = false;
+    this.db.dataChange.next(this.tree.data);
+    this.loadingTree = false;
+    this.expandNodes(expandedNodeNames);
+  }
+
+}

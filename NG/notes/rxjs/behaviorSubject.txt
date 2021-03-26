@@ -1,0 +1,57 @@
+//in service//
+/* user has initial data that after you get it
+from the back end will be updated from the app.
+only need one get in the beginning */
+
+dataToTrack:blueprint = {
+  "dataOne": [],
+  "dataTwo": [],
+  "dataThree": []
+}
+
+private dataToTrackBvSb$ = new BehaviorSubject(this.dataToTrack);
+  public dataToTrackObs$ = this.dataToTrackBvSb$.asObservable();
+
+  constructor(){
+  //get initial data for user
+  this.getdataToTrack().subscribe((dataToTrack: blueprint) => {
+  this.dataToTrackBvSb$.next(newData) //send it to anyone listening
+  this.dataToTrack = newData;
+})
+  }
+
+  //initial call to initialze data in app
+  getUserQueries() {
+    try {
+      return this.http.get(dataForUser)
+        .pipe(
+          catchError(error => {
+            this.handleGetError(error)
+            throw (error);
+          })
+        );
+    } catch (error) {
+      console.log("error from http request is thrown and caught and .. ", error)
+    }
+  }
+
+//what the components will use:
+  getDataSubscription() {
+  return this.dataToTrackObs$;
+}
+
+  //from component//
+  this.service.getDataSubscription().subscribe(
+  (newData)=>{
+        let newDataArray =[...dataValues[key]].reverse();
+        if(data.length > 5){
+          this.data = newDataArray.slice(0,5);
+        }
+        else{
+          this.data = newDataArray;
+        }
+    },
+    error=>console.log("error in receiving query values in queries box: ", error)
+  )
+
+}

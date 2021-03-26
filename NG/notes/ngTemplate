@@ -1,0 +1,8 @@
+<div class="container">
+  <div *ngIf="!loadingData;else noData">
+  </div>
+  <ng-template #noData>
+  <div class="loading">
+    ...Loading
+  </div>
+</ng-template>

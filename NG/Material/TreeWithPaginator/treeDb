@@ -1,0 +1,141 @@
+import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable, forkJoin } from 'rxjs';
+
+@Injectable()
+export class TreeDb {
+  dataChange = new BehaviorSubject<Node[]>([]);
+  currentTree: any[];
+  fullTree: any[];
+  isMatch = ({
+    label
+  }, filteredText) => label.toLowerCase().indexOf(filteredText.toLowerCase()) > -1;
+
+
+  constructor(private searchService: SearchService, ) { }
+
+  /**********
+  load  tree using ID
+  **********/
+  public loadTree(dataID) {
+    let tree;
+  }
+
+  public loadFullTree(dataID) {
+    if (ID) {
+      this.searchService.getFullTree(ID).subscribe(fullTree => {
+        this.fullTree = [fullTree["root-tree-data"]];
+        this.currentTree = this.replaceRecurseWithNodeObjects(this.fullTree);
+        this.dataChange.next(this.currentTree);
+
+
+      })
+    }
+
+  }
+
+
+  /**********
+  replace each tree node with Node class instance
+  This instance tracks children using a paginator and behaviorSubject
+  **********/
+  replaceRecurseWithNodeObjects(arr) {
+    let replaced = arr.reduce((acc, nV) => {
+      let nodeParameter: NodeParameter = { label: nV.label, dataID: nV["dataID"] };
+      let childrenObjs = this.replaceRecurseWithNodeObjects((nV.children || nV.descendants) || [])
+      if (childrenObjs) {
+        nodeParameter.allChildren = childrenObjs
+        let nodeObj = new Node(nodeParameter)
+        acc.push(nodeObj);
+      } else {
+        let nodeObj = new Node(nodeParameter);
+        acc.push(nodeObj)
+
+      }
+      return acc;
+    }, []);
+    return replaced;
+  }
+
+
+  /**********
+  Filters tree so that only the paths
+  to the children where the "filteredText" is a
+  match is returned. in this case, there shoud only
+  be ONE matched child. So the matched child
+  and all the parent nodes up to the root would be the only
+  returned path
+  ********/
+  filterTree(array, findTextMatchFn, filteredText) { //is match returns either tru or false
+    return array.reduce((acc, nV) => {
+      //first call the filter function again on the children
+      var children = this.filterTree(nV.children || [], findTextMatchFn, filteredText);
+      //passing "nV" pulls out the label and does a compare that results
+      //in either tru or false
+      let isMatch = findTextMatchFn(nV, filteredText);
+      if (findTextMatchFn(nV, filteredText) || children.length) {
+        //create  new object using Nv properties and
+        //repacing children with those matching filtered text
+        acc.push(Object.assign({}, nV, children.length && {
+          children
+        }))
+      };
+      return acc;
+    }, []);
+  }
+
+  public getParentPathForTree(selectionName: string) {
+    //return this.filterTree(this.currentTree, this.isMatch, selectionName);
+    return this.filterTree(this.fullTree, this.isMatch, selectionName);
+  }
+
+
+
+  findNodeOld(label: string, children: Array<Node>): Node {
+    let found = children.find(child => child.label.toLowerCase() === label.toLowerCase());
+    if (!found) {
+      let i = 0;
+      while (!found && i < children.length) {
+        if (children[i].children && children[i].children.length) {
+          found = this.findNodeOld(label, children[i].children);
+        }
+        i++;
+      }
+    }
+    return found;
+  }
+
+  findNode(filterLabel: string, children: Array<Node>, ): Array<Node> {
+    return children.reduce((result, Node) => {
+      //first call the filter function again on the children
+      var children = this.findNode(filterLabel, Node.children || []);
+      //passing "nV" pulls out the label and does a compare that results
+      //in either tru or false
+      if (this.isLabelAMatch(Node, filterLabel) || children.length) {
+        //object.assign can have multiple sources. the rightmost has the most precendence
+        //first two arguments make a copy of nV (the node )
+        //last argument replaces the children with the filtered children in this functino
+        result.push(Object.assign({}, Node, children.length && {
+          children
+        }))
+      };
+      return result;
+    }, []);
+  }
+
+
+  isLabelAMatch({ label }, textToFilterOn) {
+    return ({ label }, filteredText) => label.toLowerCase().indexOf(filteredText.toLowerCase()) > -1
+  }
+
+
+  copyObj(o) {
+    return Object.assign({}, o)
+  }
+
+  nodeHasChildren(node: Node): boolean {
+    return (typeof node === 'object')
+      && (typeof node.children !== 'undefined')
+      && (node.children.length > 0);
+  }
+
+}
